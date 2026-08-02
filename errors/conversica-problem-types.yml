@@ -1,0 +1,76 @@
+generated: '2026-08-01'
+method: derived
+source: openapi/conversica-integrations-api-openapi.yml
+docs: https://help.conversica.com/hc/en-us/articles/360048601712-Conversica-API-Integration-Manual
+format: http-status
+rfc9457: false
+description: >-
+  Conversica publishes a short status-code table for its ingest endpoint and a
+  status/message acknowledgement envelope for the Website Chat lead-creation webhook. There
+  is no problem+json media type, no error type URIs, no machine-readable error codes and no
+  error body schema for the ingest endpoint. What follows is exactly what is documented -
+  no error catalogue has been invented to fill the gap.
+envelope:
+  ingest:
+    body_documented: false
+    signal: HTTP status code
+  webhook_ack:
+    media_type: application/json
+    schema: openapi/conversica-integrations-api-openapi.yml#/components/schemas/WebhookAck
+    fields:
+      - name: status
+        type: string
+        description: HTTP status code rendered as a string.
+      - name: message
+        type: string
+        description: Human-readable result message.
+problems:
+  - status: 400
+    title: Bad Request
+    detail: The request could not be understood due to an error.
+    source_operation: openapi/conversica-integrations-api-openapi.yml#postLead
+    remediation: >-
+      Validate the JSON body against the Lead schema. Confirm every required key is present
+      (apiVersion, id, conversationId, firstName, email, leadSource, repName), that datetime
+      values are UTC RFC 3339 and that boolean values are true or false.
+  - status: 401
+    title: Unauthorized
+    detail: The request could not be processed due to authentication.
+    source_operation: openapi/conversica-integrations-api-openapi.yml#postLead
+    remediation: >-
+      Confirm the HTTP Basic credentials issued by your Conversica technical account
+      manager are being sent, that the username meets the five-character minimum, and that
+      the request is over HTTPS.
+  - status: 400
+    title: Invalid request data
+    detail: Returned by the customer's Website Chat lead-creation endpoint when payload validation fails.
+    source_operation: openapi/conversica-integrations-api-openapi.yml#receiveChatLead
+    envelope: webhook_ack
+    example: examples/conversica-chat-webhook-ack.json
+    documented_message_example: 'Missing required field: email'
+    remediation: Return status "400" with a message naming the missing or invalid field.
+  - status: 401
+    title: Invalid credentials
+    detail: Returned by the customer's Website Chat lead-creation endpoint when Basic auth fails.
+    source_operation: openapi/conversica-integrations-api-openapi.yml#receiveChatLead
+    envelope: webhook_ack
+  - status: 500
+    title: Internal Server Error
+    detail: Returned by the customer's Website Chat lead-creation endpoint when an error occurred on the server.
+    source_operation: openapi/conversica-integrations-api-openapi.yml#receiveChatLead
+    envelope: webhook_ack
+gaps:
+  - No application-level error codes or error identifiers are published.
+  - No 403, 404, 409, 422, 429 or 5xx behaviour is documented for POST /json/.
+  - No retry or backoff guidance is published for either direction.
+  - >-
+    Delivery failure semantics are surfaced operationally rather than as API errors -
+    undeliverable leads land in the Unworkable and Lead Stopped conversation stages (see
+    vocabulary/conversica-conversation-vocabulary.yml).
+x-evidence:
+  fetched: '2026-08-01'
+  urls:
+    - url: https://help.conversica.com/hc/en-us/articles/360048601712-Conversica-API-Integration-Manual
+      http_status: 200
+    - url: https://help.conversica.com/hc/en-us/articles/38828763556635-Implementing-a-Conversica-API-Lead-Creation-Webhook-for-Website-Chat
+      http_status: 200

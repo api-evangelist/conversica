@@ -1,0 +1,70 @@
+generated: '2026-08-01'
+method: searched
+source: https://help.conversica.com/hc/en-us/articles/29112990754715-How-To-Use-Your-Test-Lead-Token
+description: >-
+  Conversica ships no public sandbox host, no test-mode API key prefix and no self-serve
+  developer environment. Testing is done against the live platform using a per-account Test
+  Lead Token that marks a lead as a test lead so it is messaged without consuming real lead
+  volume, plus a Salesforce sandbox path for the packaged CRM integration.
+separation_model:
+  test_vs_live_hosts: false
+  test_key_prefix: false
+  mode_flag: false
+  mechanism: per-account test token embedded in lead data
+  note: >-
+    There is no separate sandbox base URL. https://integrations-api.conversica.com is the
+    only documented endpoint; test traffic is distinguished by the token, not by the host or
+    the credential.
+test_facilities:
+  - name: Test Lead Token
+    kind: magic-value
+    description: >-
+      A per-account token issued by the customer's Customer Success Manager or Technical
+      Account Manager, used to send test leads through a real Assistant before the account
+      is activated so that real leads are not consumed.
+    format: a string of 10 characters
+    published_example: ksggyykpgl
+    placement: >-
+      The token replaces the LAST NAME of the test lead. Any active email address, including
+      the implementer's own org email, may be used for the test lead.
+    default_quota: 10 test leads per token, increasable on request
+    prerequisites:
+      - Established API access with Conversica
+      - Conversica API User has the correct user permissions
+      - Assistant Settings complete - name, title, email, working hours
+      - Email setup complete
+      - At least one campaign set up and synced to Conversica as active
+      - At least one sales rep added to the Conversica dashboard, plus a default sales rep
+    latency_note: Messages can take 10-15 minutes to arrive and may land in spam.
+    source: https://help.conversica.com/hc/en-us/articles/29112990754715-How-To-Use-Your-Test-Lead-Token
+  - name: Connection test
+    kind: smoke-test
+    description: >-
+      The API Integration Manual publishes a curl/PHP connection test that POSTs a minimal
+      Lead payload to the Conversica endpoint and reads back the HTTP status code.
+    payload_example: examples/conversica-lead-minimal.json
+    endpoint: https://integrations-api.conversica.com/json/
+    source: https://help.conversica.com/hc/en-us/articles/360048601712-Conversica-API-Integration-Manual
+  - name: Salesforce sandbox implementation
+    kind: partner-sandbox
+    description: >-
+      The Conversica managed package can be installed and exercised in a Salesforce sandbox
+      before production rollout, which is the documented rehearsal path for the packaged CRM
+      integration rather than the raw API.
+    source: https://help.conversica.com/hc/en-us/articles/360048626152-Implementing-your-Conversica-Salesforce-Package-in-Sandbox-Prior-to-Production
+test_credentials_published: false
+test_credentials_note: >-
+  No public test username, password or token value is published. The example token string
+  above is the format illustration Conversica prints in its own documentation; real tokens
+  are issued per account.
+gaps:
+  - No sandbox base URL or test-mode credential.
+  - No fixture or event-trigger tooling for the Message / Lead Update webhooks - customers must drive real conversations to exercise their receiving endpoints.
+  - No time simulation or test clock.
+x-evidence:
+  fetched: '2026-08-01'
+  urls:
+    - url: https://help.conversica.com/hc/en-us/articles/29112990754715-How-To-Use-Your-Test-Lead-Token
+      http_status: 200
+    - url: https://help.conversica.com/hc/en-us/articles/360048601712-Conversica-API-Integration-Manual
+      http_status: 200

@@ -1,0 +1,142 @@
+generated: '2026-08-01'
+method: searched
+source: https://help.conversica.com/hc/en-us/articles/360048601712-Conversica-API-Integration-Manual
+description: >-
+  Cross-cutting request/response semantics for the Conversica Integrations API, searched
+  from the published API Integration Manual and derived from
+  openapi/conversica-integrations-api-openapi.yml. Absent conventions are recorded as
+  absent rather than assumed.
+api_style:
+  protocol: HTTPS
+  paradigm: JSON-over-HTTP, POST only
+  shape: >-
+    A single ingest endpoint plus provider-initiated callbacks. There is no resource CRUD
+    surface, no GET, and no query interface - Conversica does not expose a read API.
+  content_type: application/json
+  base_url: https://integrations-api.conversica.com
+  path: /json/
+authentication:
+  style: HTTP Basic access authentication
+  transport_security: HTTPS required in both directions
+  credential_issuance: >-
+    Conversica issues the username/password for its endpoint via a technical account
+    manager. The customer issues one username/password pair that Conversica uses for all
+    customer endpoints.
+  constraints:
+    - Five character minimum for API usernames.
+  bearer_tokens: false
+  api_keys: false
+  oauth2:
+    supported: true
+    direction: conversica-to-customer
+    note: >-
+      Conversica documents OAuth 2.0 support for authenticating Conversica's calls into a
+      customer's API. It is arranged through a technical account manager or support case;
+      no authorization/token URLs, grant types or scopes are published, so no scopes
+      artifact is derivable.
+    source: https://help.conversica.com/hc/en-us/articles/5357137175835-OAuth-2-0-Authentication-with-Conversica
+  detail: authentication/conversica-authentication.yml
+versioning:
+  scheme: in-payload
+  field: apiVersion
+  current: '7.2'
+  note: >-
+    The API version travels as a required string field in the JSON body of every object -
+    Lead, Message and Lead Update - rather than in the URL path, a header or a query
+    parameter. The endpoint path itself (/json/) is unversioned.
+  breaking_change_notice: >-
+    The API Terms of Service state Conversica may make backwards-incompatible changes and
+    intends to give 30 days prior notice, without guaranteeing it.
+  detail: lifecycle/conversica-lifecycle.yml
+idempotency:
+  supported: false
+  header: null
+  note: >-
+    Conversica documents no idempotency key, no request-deduplication contract and no
+    replay-safe retry semantics for POST /json/. De-duplication is handled server side
+    against the Lead id (Duplicate (Internal) / Duplicate (CRM) / Duplicate (External)
+    conversation statuses) rather than by a client-supplied idempotency key. No
+    Idempotency pointer is claimed for this provider.
+pagination:
+  supported: false
+  note: There is no list or read operation, so no pagination surface exists.
+filtering_and_expansion:
+  supported: false
+  note: >-
+    Audience targeting is done with conversationId, which selects the Conversation (list or
+    filtered set of Leads) a posted Lead belongs to. There is no field-expansion or
+    sparse-fieldset mechanism.
+partial_updates:
+  supported: true
+  applies_to: LeadUpdate webhook
+  note: >-
+    Other than apiVersion, id and clientId, a Lead Update carries only the keys whose
+    values changed. Consumers must merge partial payloads and must not treat a missing key
+    as a cleared value.
+identifiers:
+  correlation_key: id
+  correlation_note: >-
+    id is the Lead's unique ID in the CUSTOMER's system (the Source ID), not a
+    Conversica-issued identifier. It is the join key across Lead, Message, Lead Update and
+    Website Chat payloads.
+  tenant_key: clientId
+  tenant_note: Required when one API integration serves multiple Conversica customers (provider-style integrations).
+  audience_key: conversationId
+data_types:
+  datetime: >-
+    All keys with a datetime type must contain UTC values following RFC 3339, e.g.
+    2019-05-10T05:57:44+00:00.
+  boolean: All keys with a boolean type must contain true or false.
+  numeric_ids: >-
+    Identifier-shaped fields (id, clientId, repId, year) are typed as String in the
+    published field tables, not as numbers.
+request_tracing:
+  request_id_header: null
+  note: No request-id or correlation header is documented in either direction.
+rate_limiting:
+  documented_limits: false
+  signaling_headers: null
+  note: >-
+    The API Terms of Service prohibit "excessive or abusive usage" and use of the APIs "in
+    a manner that exceeds rate limits", but no numeric limit, window or response header is
+    published. No rate-limits artifact is derivable.
+  source: https://www.conversica.com/legal-info/conversica-api-terms-of-service
+error_envelope:
+  inbound:
+    style: HTTP status code only
+    documented_codes: [200, 400, 401]
+    body: No error body schema is published for POST /json/.
+  outbound_ack:
+    style: JSON object with status and message
+    applies_to: the customer's Website Chat lead-creation endpoint
+    fields:
+      status: HTTP status code as a string, one of "200", "400", "401", "500"
+      message: human-readable result message
+    note: >-
+      The status code is duplicated inside the JSON body as a string; consumers of the ack
+      should treat the body status, not only the HTTP status, as the result signal.
+  rfc9457: false
+  detail: errors/conversica-problem-types.yml
+onboarding:
+  self_serve: false
+  gate: >-
+    Credentials are issued by a Conversica technical account manager, and the API Terms of
+    Service require Conversica to test and approve an application before it may be enabled.
+  test_facility: sandbox/conversica-sandbox.yml
+cross_links:
+  authentication: authentication/conversica-authentication.yml
+  errors: errors/conversica-problem-types.yml
+  lifecycle: lifecycle/conversica-lifecycle.yml
+  webhooks: asyncapi/conversica-webhooks.yml
+  vocabulary: vocabulary/conversica-conversation-vocabulary.yml
+  data_model: data-model/conversica-data-model.yml
+  sandbox: sandbox/conversica-sandbox.yml
+x-evidence:
+  fetched: '2026-08-01'
+  urls:
+    - url: https://help.conversica.com/hc/en-us/articles/360048601712-Conversica-API-Integration-Manual
+      http_status: 200
+    - url: https://help.conversica.com/hc/en-us/articles/5357137175835-OAuth-2-0-Authentication-with-Conversica
+      http_status: 200
+    - url: https://www.conversica.com/legal-info/conversica-api-terms-of-service
+      http_status: 200

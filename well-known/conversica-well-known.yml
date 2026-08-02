@@ -1,0 +1,75 @@
+generated: '2026-08-01'
+method: probed
+source: live probes of every Conversica host in apis.yml and the OpenAPI servers[]
+description: >-
+  Conversica serves no /.well-known/ discovery documents on any host. Recorded so a later
+  round has the negative result with its evidence rather than re-probing. No WellKnown or
+  SecurityTxt pointer is wired in apis.yml, because no document exists to point at.
+documents: []
+hosts_probed:
+- host: https://www.conversica.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+  - {path: /llms.txt, status: 404}
+- host: https://conversica.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+  - {path: /llms.txt, status: 404}
+- host: https://integrations-api.conversica.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+  - {path: /llms.txt, status: 404}
+  - {path: /openapi.json, status: 404}
+  - {path: '/json/', status: 405, note: GET rejected - documented POST-only ingest endpoint}
+- host: https://my.conversica.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+  - {path: /llms.txt, status: 404}
+- host: https://help.conversica.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+  - {path: /llms.txt, status: 404}
+false_positives_rejected:
+- host: https://app.conversica.com
+  observed_status: 200
+  content_type: text/html
+  reason: >-
+    Single-page-app catch-all returns an identical 1840-byte HTML shell for every path
+    including /.well-known/agent-card.json, /openapi.json and /llms.txt. Rejected - not a
+    discovery document.
+- host: https://trust.conversica.com
+  observed_status: 200
+  content_type: text/html
+  reason: >-
+    Vanta trust-report SPA returns an identical 3307-byte HTML shell for every path.
+    Rejected.
+- host: https://api.conversica.com
+  observed_status: 403
+  reason: Host answers 403 to every path probed; no document served.
+x-evidence:
+  fetched: '2026-08-01'
+  method: HTTPS GET with a browser User-Agent, 12s timeout, redirects followed

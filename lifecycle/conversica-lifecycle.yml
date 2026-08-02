@@ -1,0 +1,76 @@
+generated: '2026-08-01'
+method: searched
+source: https://www.conversica.com/legal-info/conversica-api-terms-of-service
+description: >-
+  Versioning, change-notice and operational-transparency posture for the Conversica
+  Integrations API, searched across the API Terms of Service, the help centre and live
+  probes. Absences below are probed absences, not assumptions.
+versioning:
+  scheme: in-payload field
+  field: apiVersion
+  current: '7.2'
+  docs: https://help.conversica.com/hc/en-us/articles/360048601712-Conversica-API-Integration-Manual
+  note: >-
+    Every Lead, Message and Lead Update object carries a required apiVersion string. The
+    endpoint path /json/ is unversioned. Conversica publishes no version history, no
+    supported-version matrix and no end-of-life dates for prior apiVersion values.
+deprecation:
+  policy_url: https://www.conversica.com/legal-info/conversica-api-terms-of-service
+  policy_published: true
+  policy_summary: >-
+    The API Terms of Service state that Conversica may need to make changes to one or more
+    of its APIs, including backwards-incompatible changes, and that Conversica will use
+    commercially reasonable efforts to give 30 days prior notice of such changes - stated as
+    an intention rather than a guarantee. Continued use after a change constitutes
+    acceptance.
+  notice_period_days: 30
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  deprecated_operations: []
+change_notification:
+  channel: >-
+    Direct notice to customers plus the Conversica help centre Product Announcements
+    section. There is no dated API changelog or release-notes feed.
+  changelog_published: false
+  product_announcements: https://help.conversica.com/hc/en-us/sections/360013201132-Product-Announcements
+sla:
+  published: false
+  url: null
+  uptime_target: null
+  note: The public API Terms of Service disclaim any warranty that the APIs will be uninterrupted, timely, secure or error-free, and publish no SLA.
+status_page:
+  published: false
+  probes:
+    - host: status.conversica.com
+      result: NXDOMAIN
+    - url: https://conversica.statuspage.io/
+      http_status: 302
+      redirect: https://conversica.statuspage.io/inactive
+      note: the Atlassian Statuspage subdomain exists but is marked inactive
+  note: >-
+    No live status page was found. A stale status.conversica.com reference still appears in
+    search results, but the host does not resolve and the underlying Statuspage instance is
+    inactive, so no StatusPage pointer is claimed.
+support:
+  help_center: https://help.conversica.com/
+  email: support@conversica.com
+  account_management: >-
+    API access, credentials and OAuth 2.0 setup are all brokered through a named Conversica
+    technical account manager or customer success manager.
+approval_gate:
+  required: true
+  note: >-
+    The API Terms of Service require the customer to cooperate with Conversica testing for
+    quality assurance and approval, and forbid enabling an application prior to Conversica
+    approval.
+x-evidence:
+  fetched: '2026-08-01'
+  urls:
+    - url: https://www.conversica.com/legal-info/conversica-api-terms-of-service
+      http_status: 200
+    - url: https://help.conversica.com/hc/en-us/articles/360048601712-Conversica-API-Integration-Manual
+      http_status: 200
+    - url: https://help.conversica.com/api/v2/help_center/en-us/sections/360013201132/articles.json
+      http_status: 200
+      note: Product Announcements section contains 2 articles, dated 2024-08-21 and 2025-10-28; not an API changelog

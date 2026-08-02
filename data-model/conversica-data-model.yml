@@ -1,0 +1,119 @@
+generated: '2026-08-01'
+method: derived
+source: openapi/conversica-integrations-api-openapi.yml
+description: >-
+  Entity graph derived from the schemas and id-reference fields in the captured Conversica
+  Integrations API contract. The model is deliberately small: Conversica exposes no read
+  API, so every entity below is either something the customer pushes in or something
+  Conversica pushes back out, joined on identifiers that live in the CUSTOMER's system.
+identifier_model:
+  primary_join_key:
+    field: id
+    owner: customer system
+    description: >-
+      The Lead's unique ID in the customer's system (Source ID). Conversica echoes this
+      value back on every Message and Lead Update, so it is the correlation key for the
+      whole graph. Conversica does not issue or expose an identifier of its own through the
+      API.
+  tenant_key:
+    field: clientId
+    description: Unique ID for the customer in the customer's system; required for multi-customer (provider-style) integrations.
+  grouping_key:
+    field: conversationId
+    description: The Conversation - a list or filtered set of Leads, analogous to a campaign in a CRM - that a posted Lead belongs to.
+  id_prefixes: []
+  id_prefix_note: Conversica publishes no typed or prefixed identifier scheme; all identifiers are opaque customer-supplied strings.
+entities:
+- name: Lead
+  schema: openapi/conversica-integrations-api-openapi.yml#/components/schemas/Lead
+  direction: customer-to-conversica
+  description: A prospect, contact, customer or account the Conversica Assistant will converse with.
+  key: id
+  fields: 41
+  domains: [core, contact, consent, automotive]
+- name: Message
+  schema: openapi/conversica-integrations-api-openapi.yml#/components/schemas/Message
+  direction: conversica-to-customer
+  description: One message sent by the Assistant to a Lead, or received from a Lead.
+  key: id
+  fields: 7
+- name: LeadUpdate
+  schema: openapi/conversica-integrations-api-openapi.yml#/components/schemas/LeadUpdate
+  direction: conversica-to-customer
+  description: A partial state change on a Lead or its Conversation.
+  key: id
+  fields: 25
+  partial: true
+- name: ChatLead
+  schema: openapi/conversica-integrations-api-openapi.yml#/components/schemas/ChatLead
+  direction: conversica-to-customer
+  description: A lead captured by Conversica Website Chat, delivered with the chat transcript.
+  key: email
+  fields: 5
+- name: Salesperson
+  schema: null
+  description: >-
+    Implicit entity - the Lead owner. Not a standalone schema; carried as the repId,
+    repName and repEmail fields on Lead, with bdcRep* and serviceRep* variants for
+    automotive.
+  key: repId
+- name: Conversation
+  schema: null
+  description: >-
+    Implicit entity - the conversational skill and audience a Lead is enrolled into.
+    Referenced by conversationId on Lead, and its state is reported back through the
+    conversationStage / conversationStatus fields on LeadUpdate.
+  key: conversationId
+  vocabulary: vocabulary/conversica-conversation-vocabulary.yml
+relationships:
+- from: Lead
+  to: Message
+  type: has_many
+  via: id
+  note: Every Message carries the Lead's customer-system id.
+- from: Lead
+  to: LeadUpdate
+  type: has_many
+  via: id
+  note: Lead Updates are partial patches keyed on the same id; merge, do not replace.
+- from: Lead
+  to: Salesperson
+  type: belongs_to
+  via: repId
+- from: Lead
+  to: Conversation
+  type: belongs_to
+  via: conversationId
+- from: Lead
+  to: Client
+  type: belongs_to
+  via: clientId
+  note: Only present in multi-customer provider-style integrations.
+- from: LeadUpdate
+  to: Conversation
+  type: reports_on
+  via: conversationStage, conversationStatus
+- from: ChatLead
+  to: Lead
+  type: becomes
+  via: email
+  note: >-
+    The chat capture is delivered before the customer system has minted an id, so the join
+    is on email plus the transcript; the customer creates the Lead and then posts it back to
+    Conversica under its own id.
+enumerations:
+- field: action
+  entity: Message
+  values: [sent, received]
+- field: leadStatus
+  entity: LeadUpdate
+  vocabulary: vocabulary/conversica-conversation-vocabulary.yml#lead-status
+- field: conversationStage
+  entity: LeadUpdate
+  vocabulary: vocabulary/conversica-conversation-vocabulary.yml#conversation-stage-status
+- field: conversationStatus
+  entity: LeadUpdate
+  vocabulary: vocabulary/conversica-conversation-vocabulary.yml#conversation-stage-status
+notes:
+- No $ref-based composition exists in the source documentation; relationships are derived from shared identifier fields.
+- The graph is write-only from the customer's side and event-driven back; there is no operation to read a Lead, Message or Conversation from Conversica.

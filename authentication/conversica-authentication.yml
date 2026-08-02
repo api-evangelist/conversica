@@ -1,0 +1,88 @@
+generated: '2026-08-01'
+method: searched
+source: openapi/conversica-integrations-api-openapi.yml
+docs: https://help.conversica.com/hc/en-us/articles/360048601712-Conversica-API-Integration-Manual
+summary:
+  types:
+  - http
+  http_schemes:
+  - basic
+  api_key_in: []
+  oauth2_flows: []
+  bidirectional: true
+  note: >-
+    Conversica's API is authenticated in both directions with HTTP Basic over HTTPS.
+    Conversica issues one credential pair for its own endpoint; the customer issues a
+    single credential pair that Conversica uses for every customer-hosted endpoint.
+schemes:
+- name: basicAuth
+  type: http
+  scheme: basic
+  description: |-
+    HTTPS basic access authentication. Conversica issues a username and password for
+    the Conversica endpoint; the customer issues a single username/password pair that
+    Conversica uses for both customer endpoints. API usernames have a five-character
+    minimum. Credentials are obtained from a Conversica technical account manager.
+  sources:
+  - openapi/conversica-integrations-api-openapi.yml
+  applies_to:
+  - operation: postLead
+    direction: customer-to-conversica
+    endpoint: https://integrations-api.conversica.com/json/
+  - operation: receiveMessage
+    direction: conversica-to-customer
+    endpoint: customer-hosted
+  - operation: receiveLeadUpdate
+    direction: conversica-to-customer
+    endpoint: customer-hosted
+  - operation: receiveChatLead
+    direction: conversica-to-customer
+    endpoint: customer-hosted
+credential_lifecycle:
+  self_serve: false
+  issuance: >-
+    Requested from the customer's Conversica technical account manager when the customer is
+    ready for development. Applications must additionally be tested and approved by
+    Conversica before they may be enabled.
+  constraints:
+  - Five character minimum for API usernames.
+  - Both customer endpoints must share one username/password pair.
+  rotation_policy_published: false
+  expiry: none - credentials are long-lived shared secrets
+  scopes: none - Basic auth carries no scope or permission model
+oauth2:
+  supported: true
+  direction: conversica-to-customer
+  description: >-
+    Conversica documents OAuth 2.0 as an alternative for authenticating Conversica's
+    outbound calls into a customer's own API, so the customer does not have to share direct
+    user credentials. Setup is arranged through a technical account manager or a support
+    case to support@conversica.com.
+  authorization_url: null
+  token_url: null
+  grant_types_published: false
+  scopes_published: false
+  note: >-
+    Because no endpoints, grant types or scopes are published, no scopes artifact is
+    derivable and derive-oauth-scopes.py correctly returns zero.
+  source: https://help.conversica.com/hc/en-us/articles/5357137175835-OAuth-2-0-Authentication-with-Conversica
+not_supported:
+  api_keys: true
+  bearer_tokens: true
+  openid_connect: true
+  mutual_tls: true
+  webhook_signing: true
+  note: >-
+    Each of the above was searched for in the published documentation and probed where
+    applicable (/.well-known/openid-configuration returns 404 on every Conversica host).
+    There is no webhook signature or HMAC contract, so Basic auth is the whole of the
+    authentication story on the inbound callbacks.
+x-evidence:
+  fetched: '2026-08-01'
+  urls:
+  - url: https://help.conversica.com/hc/en-us/articles/360048601712-Conversica-API-Integration-Manual
+    http_status: 200
+  - url: https://help.conversica.com/hc/en-us/articles/5357137175835-OAuth-2-0-Authentication-with-Conversica
+    http_status: 200
+  - url: https://help.conversica.com/hc/en-us/articles/38828763556635-Implementing-a-Conversica-API-Lead-Creation-Webhook-for-Website-Chat
+    http_status: 200

@@ -1,0 +1,11 @@
+{
+  "apiVersion": "7.2",
+  "id": "12345",
+  "clientId": "67890",
+  "leadStatus": "None",
+  "leadStatusDate": "2019-05-24T19:24:30+00:00",
+  "conversationStage": "Messaging",
+  "conversationStageDate": "2019-05-24T19:24:30+00:00",
+  "conversationStatus": "Sent Message",
+  "conversationStatusDate": "2019-05-24T19:24:30+00:00"
+}

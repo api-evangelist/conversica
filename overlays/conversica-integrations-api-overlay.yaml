@@ -1,0 +1,74 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Conversica Integrations API
+  version: 1.0.0
+extends: openapi/conversica-integrations-api-openapi.yml
+x-provenance:
+  generated: '2026-08-01'
+  method: generated
+  source: openapi/conversica-integrations-api-openapi.yml
+  note: >-
+    Captures the API Evangelist annotations layered onto the Conversica contract so the
+    captured document itself stays a faithful transcription of Conversica's published
+    documentation. Apply this overlay to get the enriched view; never mutate the source.
+actions:
+- target: $.info
+  update:
+    x-apievangelist-profile: https://raw.githubusercontent.com/api-evangelist/conversica/refs/heads/main/apis.yml
+    x-apievangelist-artifacts:
+      conventions: conventions/conversica-conventions.yml
+      errors: errors/conversica-problem-types.yml
+      lifecycle: lifecycle/conversica-lifecycle.yml
+      authentication: authentication/conversica-authentication.yml
+      webhooks: asyncapi/conversica-webhooks.yml
+      vocabulary: vocabulary/conversica-conversation-vocabulary.yml
+      data_model: data-model/conversica-data-model.yml
+      sandbox: sandbox/conversica-sandbox.yml
+      agentic_access: agentic-access/conversica-agentic-access.yml
+      skills: skills/_index.yml
+    x-apievangelist-contract-gaps:
+    - no machine-readable specification published by the provider
+    - no read or list operations - the API is write-only plus webhooks
+    - no idempotency contract on the ingest endpoint
+    - no published rate limits, quotas or rate-limit response headers
+    - no error body schema or application error codes on the ingest endpoint
+    - no sandbox host or test credential; testing uses a per-account Test Lead Token against production
+    - no /.well-known/ discovery documents and no security.txt despite a published disclosure policy
+- target: $.paths['/json/'].post
+  update:
+    x-apievangelist-notes: >-
+      Single ingest operation. Credentials are provisioned by a Conversica technical account
+      manager and applications must be approved by Conversica before enablement, so this
+      operation cannot be exercised by an unaffiliated developer.
+    x-agentic-access:
+      action-class: acting
+      consequence: write
+      audit: required
+      token:
+        max-ttl-seconds: 900
+      note: >-
+        Posting a Lead causes an AI Assistant to begin emailing or texting a named human
+        being. Treat it as an outbound-communication trigger, not a benign record write.
+- target: $.paths['/json/'].post.responses['400']
+  update:
+    x-apievangelist-remediation: >-
+      Validate against the Lead schema: required keys apiVersion, id, conversationId,
+      firstName, email, leadSource, repName; datetimes UTC RFC 3339; booleans true/false.
+- target: $.webhooks.leadUpdate.post
+  update:
+    x-apievangelist-notes: >-
+      Partial payload. Only apiVersion, id and clientId are guaranteed; every other key
+      appears only when its value changed. Merge, never replace, and never interpret an
+      absent key as a cleared value.
+- target: $.webhooks.chatLeadCreated.post
+  update:
+    x-apievangelist-notes: >-
+      The receiving endpoint must return a JSON object whose status field repeats the HTTP
+      status code as a string. Consumers should treat the body status as the authoritative
+      result signal.
+- target: $.components.securitySchemes.basicAuth
+  update:
+    x-apievangelist-notes: >-
+      Long-lived shared secrets in both directions, with no rotation policy, no scopes and no
+      token expiry published. Rotate on a customer-defined schedule and terminate TLS
+      strictly on the receiving endpoints.

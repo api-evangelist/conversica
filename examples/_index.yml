@@ -1,0 +1,49 @@
+generated: '2026-08-01'
+method: searched
+source: https://help.conversica.com/hc/en-us/articles/360048601712-Conversica-API-Integration-Manual
+description: >-
+  Request and response examples published verbatim by Conversica in the API Integration
+  Manual and the Website Chat lead-creation webhook article. No example here was authored
+  or altered by API Evangelist.
+examples:
+  - file: conversica-lead-minimal.json
+    object: Lead
+    direction: customer-to-conversica
+    operation: postLead
+    source: https://help.conversica.com/hc/en-us/articles/360048601712-Conversica-API-Integration-Manual
+  - file: conversica-lead-automotive.json
+    object: Lead
+    direction: customer-to-conversica
+    operation: postLead
+    note: Automotive industry-specific keys.
+    source: https://help.conversica.com/hc/en-us/articles/360048601712-Conversica-API-Integration-Manual
+  - file: conversica-message-sent.json
+    object: Message
+    direction: conversica-to-customer
+    operation: receiveMessage
+    source: https://help.conversica.com/hc/en-us/articles/360048601712-Conversica-API-Integration-Manual
+  - file: conversica-message-received.json
+    object: Message
+    direction: conversica-to-customer
+    operation: receiveMessage
+    source: https://help.conversica.com/hc/en-us/articles/360048601712-Conversica-API-Integration-Manual
+  - file: conversica-lead-update-engagement.json
+    object: LeadUpdate
+    direction: conversica-to-customer
+    operation: receiveLeadUpdate
+    source: https://help.conversica.com/hc/en-us/articles/360048601712-Conversica-API-Integration-Manual
+  - file: conversica-lead-update-stage.json
+    object: LeadUpdate
+    direction: conversica-to-customer
+    operation: receiveLeadUpdate
+    source: https://help.conversica.com/hc/en-us/articles/360048601712-Conversica-API-Integration-Manual
+  - file: conversica-chat-lead.json
+    object: ChatLead
+    direction: conversica-to-customer
+    operation: receiveChatLead
+    source: https://help.conversica.com/hc/en-us/articles/38828763556635-Implementing-a-Conversica-API-Lead-Creation-Webhook-for-Website-Chat
+  - file: conversica-chat-webhook-ack.json
+    object: WebhookAck
+    direction: customer-response
+    operation: receiveChatLead
+    source: https://help.conversica.com/hc/en-us/articles/38828763556635-Implementing-a-Conversica-API-Lead-Creation-Webhook-for-Website-Chat

@@ -1,0 +1,646 @@
+openapi: 3.1.0
+info:
+  title: Conversica Integrations API
+  version: '7.2'
+  summary: Post Lead data into the Conversica Platform and receive Message and Lead Update callbacks.
+  description: |
+    The Conversica Integrations API lets a customer system (CRM or marketing automation
+    platform) transport Lead data into the Conversica Platform, and receive Lead Update
+    and Message data back from the Conversica Platform. All traffic is JSON-encoded
+    POST over HTTPS with HTTP Basic access authentication.
+
+    Direction of travel:
+
+    * Customer System -> Conversica: `POST https://integrations-api.conversica.com/json/`
+      with a Lead object.
+    * Conversica -> Customer System: Conversica POSTs Message objects and Lead Update
+      objects to two endpoints the customer provides (see the `webhooks` section). The
+      Website Chat lead-creation webhook is a third, optional customer endpoint.
+
+    Credentials are issued by a Conversica technical account manager; there is no
+    self-serve signup for this API. Applications must be tested and approved by
+    Conversica before they are enabled.
+  contact:
+    name: Conversica Support
+    email: support@conversica.com
+    url: https://help.conversica.com/hc/en-us/sections/360012154451-Conversica-API
+  termsOfService: https://www.conversica.com/legal-info/conversica-api-terms-of-service
+  x-provenance:
+    method: generated
+    generated: '2026-08-01'
+    note: >-
+      Faithfully transcribed from Conversica's published API Integration Manual and the
+      Website Chat lead-creation webhook article. Conversica publishes no machine-readable
+      spec; every path, field, type, requiredness, status code and example below is taken
+      verbatim from those documents. Nothing was invented.
+  x-evidence:
+    fetched: '2026-08-01'
+    sources:
+      - url: https://help.conversica.com/hc/en-us/articles/360048601712-Conversica-API-Integration-Manual
+        title: Conversica API Integration Manual
+        http_status: 200
+        note: retrieved via the Zendesk Help Center API (the HTML page returns 403 to non-browser clients)
+        doc_updated: '2025-11-26'
+      - url: https://help.conversica.com/hc/en-us/articles/38828763556635-Implementing-a-Conversica-API-Lead-Creation-Webhook-for-Website-Chat
+        title: Implementing a Conversica API Lead Creation Webhook for Website Chat
+        http_status: 200
+      - url: https://integrations-api.conversica.com/json/
+        http_status: 405
+        note: live probe - GET returns 405 Method Not Allowed, confirming the documented POST-only endpoint
+servers:
+  - url: https://integrations-api.conversica.com
+    description: Conversica production integrations endpoint
+security:
+  - basicAuth: []
+tags:
+  - name: Leads
+    description: Posting Lead object data into the Conversica Platform.
+paths:
+  /json/:
+    post:
+      operationId: postLead
+      summary: Post a Lead to the Conversica Platform
+      description: |
+        Sends a Lead object to Conversica so a Conversica Assistant can begin (or continue)
+        a conversation with that Lead. The endpoint accepts a JSON object; keys with a
+        `datetime` type must be UTC values following RFC 3339, and keys with a `boolean`
+        type must be `true` or `false`.
+      tags:
+        - Leads
+      security:
+        - basicAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Lead'
+            examples:
+              minimalLead:
+                summary: Minimal Lead (from the integration manual)
+                value:
+                  apiVersion: '7.2'
+                  id: '12345'
+                  conversationId: My Big Event 2019
+                  firstName: Sally
+                  email: sally@email.com
+                  leadSource: Big Events
+                  leadStatus: New
+                  optOut: false
+                  repId: '98765'
+                  repName: John
+              automotiveLead:
+                summary: Automotive Lead with industry-specific keys (from the integration manual)
+                value:
+                  apiVersion: '7.2'
+                  id: '12345'
+                  clientId: '67890'
+                  firstName: Sally
+                  lastName: Jones
+                  email: sally@email.com
+                  homePhone: '3609483728'
+                  leadType: Internet
+                  leadStatus: New
+                  leadSource: www.leadsource.com
+                  date: '2017-01-10T15:19:21+00:00'
+                  repName: John Doe
+                  repId: '23254'
+                  repEmail: john@dealershipname.com
+                  bdcRepName: Sheila Smith
+                  bdcRepId: '20582'
+                  bdcRepEmail: sheila@dealershipname.com
+                  serviceRepName: Billy Brown
+                  serviceRepId: '20143'
+                  serviceRepEmail: billy@dealershipname.com
+                  year: '2019'
+                  make: Volkswagen
+                  model: Atlas SEL
+                  vin: 1N4AL2APXBC154449
+                  appointmentStatus: Scheduled
+                  appointmentDate: '2017-01-10T15:19:21+00:00'
+                  optOut: false
+                  smsOptOut: true
+                  stopMessaging: false
+                  skipToFollowup: true
+      responses:
+        '200':
+          description: OK - the request was successful.
+        '400':
+          description: Bad Request - the request could not be understood due to an error.
+        '401':
+          description: Unauthorized - the request could not be processed due to authentication.
+webhooks:
+  message:
+    post:
+      operationId: receiveMessage
+      summary: Receive a Message object from Conversica
+      description: |
+        Conversica POSTs a Message object to the customer-provided message endpoint each
+        time the Assistant sends a message to a Lead or receives a response from a Lead.
+        The customer endpoint must use HTTPS and HTTP Basic access authentication with the
+        single username/password pair the customer shares with Conversica. Documented
+        example endpoint forms: `https://api.customername.com/conversicaMessage/` or
+        `https://api.customername.com/conversica/message`.
+      security:
+        - basicAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Message'
+            examples:
+              sent:
+                summary: Message sent by the Assistant
+                value:
+                  apiVersion: '7.2'
+                  id: '12345'
+                  clientId: '67890'
+                  action: sent
+                  date: '2019-05-10T05:57:44+00:00'
+                  subject: Your online request
+                  body: |-
+                    Hi Sally,
+                    Thanks for reaching out to us online. Would you like to schedule a demo with one of our representatives to learn more about our product?
+                    Sincerely,
+                    John
+              received:
+                summary: Message received from the Lead
+                value:
+                  apiVersion: '7.2'
+                  id: '12345'
+                  clientId: '67890'
+                  action: received
+                  date: '2019-05-10T05:57:44+00:00'
+                  subject: 'Re: Your online request'
+                  body: |-
+                    Hi John
+                    Sure, I have some time tomorrow after 3 pm Pacific, if that works?
+                    Thanks,
+                    Sally
+      responses:
+        '200':
+          description: Message accepted by the customer system.
+  leadUpdate:
+    post:
+      operationId: receiveLeadUpdate
+      summary: Receive a Lead Update object from Conversica
+      description: |
+        Conversica POSTs a Lead Update object to the customer-provided lead endpoint when
+        the state of a Lead or Conversation changes. Other than `apiVersion`, `id` and
+        `clientId`, only keys with updated values are sent per request - not every field
+        appears in every update. Documented example endpoint forms:
+        `https://api.customername.com/conversicaLead/` or
+        `https://api.customername.com/conversica/lead`.
+      security:
+        - basicAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeadUpdate'
+            examples:
+              engagementUpdate:
+                summary: Engagement / hot lead update
+                value:
+                  apiVersion: '7.2'
+                  id: '12345'
+                  clientId: '67890'
+                  dateAdded: '2019-05-24T19:14:55+00:00'
+                  firstMessageDate: '2019-05-24T19:24:55+00:00'
+                  lastMessageDate: '2019-05-24T19:27:55+00:00'
+                  lastResponseDate: '2019-05-25T12:06:55+00:00'
+                  hotLead: true
+                  hotLeadDate: '2019-05-25T12:06:55+00:00'
+                  discoveredPhone1: '5558675309'
+                  doNotEmail: false
+                  smsOptIn: true
+              stageUpdate:
+                summary: Conversation stage / status update
+                value:
+                  apiVersion: '7.2'
+                  id: '12345'
+                  clientId: '67890'
+                  leadStatus: None
+                  leadStatusDate: '2019-05-24T19:24:30+00:00'
+                  conversationStage: Messaging
+                  conversationStageDate: '2019-05-24T19:24:30+00:00'
+                  conversationStatus: Sent Message
+                  conversationStatusDate: '2019-05-24T19:24:30+00:00'
+      responses:
+        '200':
+          description: Lead Update accepted by the customer system.
+  chatLeadCreated:
+    post:
+      operationId: receiveChatLead
+      summary: Receive a Website Chat lead-creation callback from Conversica
+      description: |
+        Optional webhook for Conversica Website Chat. When the chat agent captures a
+        visitor, Conversica POSTs the captured lead plus the chat transcript to a
+        publicly accessible customer endpoint over HTTPS with HTTP Basic authentication.
+        Documented example endpoint forms:
+        `https://api.customername.com/conversicaCreate/` or
+        `https://api.customername.com/conversica/create`.
+
+        The endpoint must reply with a JSON object carrying `status` and `message`.
+      security:
+        - basicAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatLead'
+            examples:
+              chatLead:
+                summary: Website Chat lead (from the webhook article)
+                value:
+                  firstName: John
+                  lastName: Doe
+                  email: john.doe@example.com
+                  conversationHistory: |-
+                    2025-05-23T11:40:07 John Doe: I'm interested in your product.
+                    2025-05-23T11:40:11 Conversica (Assistant): Great! Let me get some details...
+      responses:
+        '200':
+          description: Lead received successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookAck'
+              examples:
+                ok:
+                  value:
+                    status: '200'
+                    message: Lead received successfully
+        '400':
+          description: Invalid request data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookAck'
+              examples:
+                badRequest:
+                  value:
+                    status: '400'
+                    message: 'Missing required field: email'
+        '401':
+          description: Invalid credentials.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookAck'
+        '500':
+          description: An error occurred on the server.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookAck'
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: |
+        HTTPS basic access authentication. Conversica issues a username and password for
+        the Conversica endpoint; the customer issues a single username/password pair that
+        Conversica uses for both customer endpoints. API usernames have a five-character
+        minimum. Credentials are obtained from a Conversica technical account manager.
+  schemas:
+    Lead:
+      type: object
+      title: Lead
+      description: >-
+        Data containing relevant information for communication by the Conversica Assistant
+        with a customer's prospects. Depending on the Conversation and Assistant in use, a
+        Lead may be a lead, contact, customer, account, prospect, or other related entity.
+        Automotive-specific keys are included and apply only to Automotive Assistants.
+      required:
+        - apiVersion
+        - id
+        - conversationId
+        - firstName
+        - email
+        - leadSource
+        - repName
+      properties:
+        apiVersion:
+          type: string
+          description: The version number of the Conversica API in use.
+          examples:
+            - '7.2'
+        id:
+          type: string
+          description: The Lead's unique ID in the customer's system (Source ID).
+        conversationId:
+          type: string
+          description: >-
+            For a particular Conversation, a list or filtered set of Leads (e.g. "campaign"
+            in some CRMs) for the purpose of tailoring messaging to a more specific
+            audience or use case.
+        firstName:
+          type: string
+          description: The Lead's first name, used in messaging.
+        email:
+          type: string
+          description: The Lead's primary email address for messaging.
+        leadSource:
+          type: string
+          description: >-
+            The source of the Lead, as indicated in the customer's system and as used by
+            Conversica for reporting on Lead Source performance or other customizations.
+        leadStatus:
+          type: string
+          description: >-
+            The status of the Lead, as indicated in the customer's system and as used by
+            Conversica for intelligent Conversation management (e.g. "New", "Sold", "Lost").
+        optOut:
+          type: boolean
+          description: Whether the Lead has opted out of all methods of marketing and contact (global opt-out).
+        repId:
+          type: string
+          description: The Salesperson's (Lead owner) unique ID in the customer's system.
+        repName:
+          type: string
+          description: The Salesperson's (Lead owner) name, used in messaging.
+        repEmail:
+          type: string
+          description: The Salesperson's (Lead owner) email address.
+        clientId:
+          type: string
+          description: >-
+            Unique ID for the customer in the customer's system. Required if the API
+            integration will be used for multiple Conversica customers.
+        lastName:
+          type: string
+          description: The Lead's last name.
+        homePhone:
+          type: string
+          description: The Lead's primary phone number.
+        workPhone:
+          type: string
+          description: The Lead's work phone number.
+        cellPhone:
+          type: string
+          description: The Lead's cell phone number. Required for SMS.
+        address:
+          type: string
+          description: The Lead's street address.
+        city:
+          type: string
+          description: The Lead's city.
+        state:
+          type: string
+          description: The Lead's state.
+        zip:
+          type: string
+          description: The Lead's zip code.
+        leadType:
+          type: string
+          description: The type of the Lead, as indicated in the customer's system (e.g. "Internet", "Web Form", "Phone-In").
+        date:
+          type: string
+          format: date-time
+          description: The date and time the Lead was created in the customer's system (UTC, RFC 3339).
+        smsOptOut:
+          type: boolean
+          description: Whether the Lead has opted out of being contacted by SMS text messaging. Required for SMS Conversations.
+        smsOptIn:
+          type: boolean
+          description: Whether the Lead has accepted being contacted by SMS text messaging. Required for SMS Conversations.
+        stopMessaging:
+          type: boolean
+          description: If true, the Assistant stops listening for responses and will no longer message the Lead.
+        skipToFollowup:
+          type: boolean
+          description: If true, the Assistant waits a few days before sending a follow-up message.
+        leadSubStatus:
+          type: string
+          description: Automotive - the sub-status of the Lead, as indicated in the customer's system.
+        appointmentStatus:
+          type: string
+          description: Automotive - the current appointment status/stage for the Lead in the customer's system (e.g. "Scheduled").
+        appointmentDate:
+          type: string
+          format: date-time
+          description: Automotive - the date and time the Lead entered into the current appointment status.
+        bdcRepId:
+          type: string
+          description: Automotive - the BDC representative's unique ID in the customer's system.
+        bdcRepName:
+          type: string
+          description: Automotive - the BDC representative's name, used in messaging.
+        bdcRepEmail:
+          type: string
+          description: Automotive - the BDC representative's email address.
+        serviceRepId:
+          type: string
+          description: Automotive - the service advisor's unique ID in the customer's system.
+        serviceRepName:
+          type: string
+          description: Automotive - the service advisor's name, used in messaging.
+        serviceRepEmail:
+          type: string
+          description: Automotive - the service advisor's email address.
+        year:
+          type: string
+          description: Automotive - the year of the vehicle of interest or primary vehicle associated with the Lead.
+        make:
+          type: string
+          description: Automotive - the make of the vehicle of interest or primary vehicle associated with the Lead.
+        model:
+          type: string
+          description: Automotive - the model of the vehicle of interest or primary vehicle associated with the Lead.
+        vin:
+          type: string
+          description: Automotive - the vehicle identification number of the vehicle associated with the Lead.
+    Message:
+      type: object
+      title: Message
+      description: >-
+        The communication between the Conversica Assistant and the Lead, including
+        communication both sent to and received from the Lead. All keys are required.
+      required:
+        - apiVersion
+        - id
+        - clientId
+        - action
+        - date
+        - subject
+        - body
+      properties:
+        apiVersion:
+          type: string
+          description: Version number of the Conversica API in use.
+        id:
+          type: string
+          description: The Lead's unique ID in the customer's system.
+        clientId:
+          type: string
+          description: Unique ID for the customer in the customer's system.
+        action:
+          type: string
+          description: Whether the message was sent by the Assistant or received from the Lead.
+          enum:
+            - sent
+            - received
+        date:
+          type: string
+          format: date-time
+          description: The date and time the message was sent or received.
+        subject:
+          type: string
+          description: The subject of the message sent or received.
+        body:
+          type: string
+          description: The body of the message sent or received.
+    LeadUpdate:
+      type: object
+      title: LeadUpdate
+      description: >-
+        Updates about the Lead and Conversation. Other than apiVersion, id and clientId,
+        only keys with updated values are sent per request.
+      required:
+        - apiVersion
+        - id
+        - clientId
+      properties:
+        apiVersion:
+          type: string
+          description: Version number of the Conversica API in use.
+        id:
+          type: string
+          description: The Lead's unique ID in the customer's system.
+        clientId:
+          type: string
+          description: Unique ID for the customer in the customer's system.
+        dateAdded:
+          type: string
+          format: date-time
+          description: The date and time the Lead was added to Conversica.
+        firstMessageDate:
+          type: string
+          format: date-time
+          description: The date and time the Assistant sent their first message to the Lead.
+        lastMessageDate:
+          type: string
+          format: date-time
+          description: The date and time the Assistant last sent a message to the Lead.
+        lastResponseDate:
+          type: string
+          format: date-time
+          description: The date and time the Assistant last received a response from the Lead.
+        hotLead:
+          type: boolean
+          description: If true, the Lead has expressed interest and is ready to be contacted by the Salesperson.
+        hotLeadDate:
+          type: string
+          format: date-time
+          description: The date and time the Lead became a Hot Lead.
+        leadAtRisk:
+          type: boolean
+          description: If true, the Lead was interested but has yet to be contacted by the Salesperson.
+        leadAtRiskDate:
+          type: string
+          format: date-time
+          description: The date and time the Lead became a Lead at Risk.
+        actionRequired:
+          type: boolean
+          description: >-
+            If true, the Lead's response requires review by the Salesperson and the
+            Assistant has stopped messaging.
+        actionRequiredDate:
+          type: string
+          format: date-time
+          description: The date and time the Lead was set as Action Required.
+        discoveredPhone1:
+          type: string
+          description: A new and unique phone number detected by the Assistant while messaging the Lead.
+        discoveredPhone2:
+          type: string
+          description: A new and unique phone number detected by the Assistant while messaging the Lead.
+        discoveredEmail1:
+          type: string
+          description: A new and unique email detected by the Assistant while messaging the Lead.
+        discoveredEmail2:
+          type: string
+          description: A new and unique email detected by the Assistant while messaging the Lead.
+        leadStatus:
+          type: string
+          description: >-
+            An actionable Status for the Lead, either during or after engagement with the
+            Assistant. See vocabulary/conversica-conversation-vocabulary.yml.
+        leadStatusDate:
+          type: string
+          format: date-time
+          description: The date and time the Lead entered into the current Conversica Lead Status.
+        conversationStage:
+          type: string
+          description: The current Stage of the Conversation. See vocabulary/conversica-conversation-vocabulary.yml.
+        conversationStageDate:
+          type: string
+          format: date-time
+          description: The date and time the Conversation entered into the current Stage.
+        conversationStatus:
+          type: string
+          description: The current Status of the Conversation. See vocabulary/conversica-conversation-vocabulary.yml.
+        conversationStatusDate:
+          type: string
+          format: date-time
+          description: The date and time the Conversation entered into the current Status.
+        doNotEmail:
+          type: boolean
+          description: If true, the Lead has requested to no longer be contacted by email.
+        smsOptIn:
+          type: boolean
+          description: If true, the Lead has accepted being contacted by SMS text messaging.
+        smsOptOut:
+          type: boolean
+          description: If true, the Lead has requested to not be contacted by SMS/text messaging.
+    ChatLead:
+      type: object
+      title: ChatLead
+      description: Lead captured by Conversica Website Chat, delivered to the customer's lead-creation webhook.
+      required:
+        - firstName
+        - lastName
+        - email
+        - conversationHistory
+      properties:
+        firstName:
+          type: string
+          description: First name of the lead.
+        lastName:
+          type: string
+          description: Last name of the lead.
+        email:
+          type: string
+          description: Email address of the lead.
+        conversationHistory:
+          type: string
+          description: Transcript of the chat conversation.
+        clientId:
+          type: string
+          description: ID of the client in the partner's system. Sent only for provider-style integrations.
+    WebhookAck:
+      type: object
+      title: WebhookAck
+      description: >-
+        Acknowledgement envelope the customer's Website Chat lead-creation webhook must
+        return: a JSON object containing status and message.
+      required:
+        - status
+        - message
+      properties:
+        status:
+          type: string
+          description: The HTTP status code, as a string.
+          enum:
+            - '200'
+            - '400'
+            - '401'
+            - '500'
+        message:
+          type: string
+          description: Human-readable result message.

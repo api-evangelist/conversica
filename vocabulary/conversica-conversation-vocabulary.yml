@@ -1,0 +1,133 @@
+generated: '2026-08-01'
+method: searched
+source: https://help.conversica.com/hc/en-us/articles/360048601712-Conversica-API-Integration-Manual
+name: Conversica Conversation Vocabulary
+description: >-
+  The controlled vocabularies Conversica publishes for its API: the actionable Lead Status
+  values returned on Lead Update objects, and the Conversation Stage / Status pairs that
+  describe where a Lead sits in the flow of messaging with a Revenue Digital Assistant.
+  Values and definitions are transcribed verbatim from the published API Integration
+  Manual appendix.
+x-evidence:
+  fetched: '2026-08-01'
+  url: https://help.conversica.com/hc/en-us/articles/360048601712-Conversica-API-Integration-Manual
+  http_status: 200
+  note: retrieved via the Zendesk Help Center API; the HTML page returns 403 to non-browser clients
+vocabularies:
+  - id: lead-status
+    name: Conversica Lead Status
+    field: leadStatus
+    applies_to: LeadUpdate
+    description: >-
+      Indicates an actionable Status for the Lead, either during or after initial
+      engagement with the Conversica Assistant. Best understood in the context of the
+      objective of the Conversation.
+    terms:
+      - term: Hot Lead
+        definition: The Lead expressed interest and is ready for next steps (e.g. transition to the human Salesperson, scheduling an appointment or demo).
+      - term: Lead to Review
+        definition: The Lead's reply requires human review to determine the Salesperson's next action. In this status the Assistant will no longer message the Lead.
+      - term: Further Action
+        definition: The Lead is still interested and has requested assistance with open questions or actions from their assigned Salesperson.
+      - term: Satisfied (New)
+        definition: The Lead responded positively to follow up and the objective of the Conversation has been met.
+      - term: Disqualified
+        definition: The Lead responded to follow up such that they no longer require assistance; the objective was not met but they do not desire continued engagement.
+      - term: No Further Action
+        definition: The Lead responded positively to follow up such that they no longer require contact or assistance, though it is unclear if the objective was met.
+  - id: conversation-stage-status
+    name: Conversica Conversation Stage and Status
+    fields:
+      - conversationStage
+      - conversationStatus
+    applies_to: LeadUpdate
+    description: >-
+      Stage groups the Status values that describe where the Lead currently is in the flow
+      of messaging or engagement with the Revenue Digital Assistant.
+    stages:
+      - stage: Preparing Lead
+        statuses:
+          - status: Preparing Lead
+            definition: Lead has been received by Conversica and has not been scheduled for first message.
+          - status: First Message Schedule
+            definition: Lead has its first message scheduled, but not sent.
+      - stage: Messaging
+        statuses:
+          - status: Sent Message
+            definition: Lead has been sent at least one message and no response to the current series has been received.
+          - status: Out of Office
+            definition: Received out of office message; Lead will remain in this status until the next message is sent, based on the date extracted.
+          - status: Checking Back Later
+            definition: Received message asking to check back later; lead remains in this status until the follow-up check back later message is sent.
+          - status: Received Response
+            definition: System is reviewing response.
+          - status: Message Scheduled
+            definition: Next message is scheduled but not yet sent, typically due to worktimes. Status changes to Sent Message on sending.
+      - stage: Excluded
+        statuses:
+          - status: Excluded (Lead Source)
+            definition: Client requested specific lead source not be worked.
+          - status: Excluded (Rep)
+            definition: Client requested specific rep's leads not be worked.
+          - status: Excluded (Lead Status)
+            definition: Client requested specific lead status not be worked.
+          - status: Excluded (Rule)
+            definition: Other reasons for exclusions, typically a client rule.
+      - stage: Unworkable
+        statuses:
+          - status: No Rep Assignment
+            definition: System is missing rep and no primary rep is set.
+          - status: Duplicate (Internal)
+            definition: Lead is a duplicate of an earlier lead from the client.
+          - status: Duplicate (CRM)
+            definition: Client CRM marked lead as duplicate.
+          - status: Duplicate (External)
+            definition: Lead is a duplicate of an earlier lead from another client.
+          - status: Invalid Email
+            definition: Lead is invalidated by the email verification system.
+          - status: Malformed Email
+            definition: Lead does not have a correct email address format.
+          - status: No Email
+            definition: Lead does not have an email address.
+          - status: Bounced
+            definition: Message could not be delivered to the mailbox due to three soft bounces or one hard bounce.
+      - stage: Lead Stopped
+        statuses:
+          - status: Unsubscribed
+            definition: Lead clicked the unsubscribe link in a message.
+          - status: Marked Spam
+            definition: Lead marked the message as Spam.
+          - status: Do Not Email
+            definition: Lead was marked as Do Not Email by the Conversica system.
+          - status: Lead Requested Stop
+            definition: The Conversica system interprets that the lead wants messaging to stop.
+          - status: No Longer at Company
+            definition: The Conversica system interprets from the response that the lead can no longer be contacted at the provided email address.
+      - stage: Client Stopped
+        statuses:
+          - status: Manager Stopped
+            definition: The rep's manager stopped messaging.
+          - status: Rep Stopped
+            definition: The rep stopped messaging.
+          - status: Admin Stopped
+            definition: The client admin stopped messaging.
+          - status: Inactive Service
+            definition: Lead deactivated due to an inactive (terminated) service.
+          - status: CRM Stopped
+            definition: The client's CRM stopped messaging through the Conversica Options field.
+          - status: Client Requested Stop
+            definition: Conversica Customer Success stopped messaging on request from the client.
+      - stage: Conversica Stopped
+        statuses:
+          - status: Listening
+            definition: Leads that do not respond within seven days after the last message in a series; the lead can move back to Messaging / Received Response if a response arrives.
+          - status: Pause Limit Exceeded
+            definition: Paused leads that have passed the limit for being worked.
+          - status: Marked Sold
+            definition: Lead marked as having already purchased.
+          - status: Conversation Complete
+            definition: Conversation with the lead is complete; the system is not expecting any further responses.
+          - status: System Stopped
+            definition: The response is such that the system cannot continue messaging, but the lead did not request stop. Closely related to Review Response (formerly Action Required).
+          - status: Service Not Active
+            definition: Service for the lead is not active; the lead has not been messaged.

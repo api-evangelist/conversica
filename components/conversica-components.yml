@@ -1,0 +1,66 @@
+generated: '2026-08-01'
+method: searched
+source: https://help.conversica.com/hc/en-us/articles/360048618012-Conversica-Website-Chat
+description: >-
+  Client-side surfaces Conversica ships for embedding in a customer's own property. This is
+  distinct from server-side SDKs (see packages/conversica-packages.yml, which is empty -
+  Conversica publishes none).
+components:
+- family: Website Chat
+  name: Conversica Website Chat widget
+  kind: javascript-widget
+  description: >-
+    A JavaScript widget deployed on the client website that renders a chat launcher in the
+    lower right corner. Opening it starts a free-form conversation with the customer's
+    Conversica agent, backed by semantic search over the customer's fact base and a large
+    language model, with no quick-reply buttons or predetermined flows. The agent can
+    capture name and email mid-conversation to create a lead, and follows up asynchronously
+    by email afterwards.
+  deployment:
+    method: script embed on the client website
+    domain_scope: single domain per deployment; additional domains are an upcharge
+  capabilities:
+  - Real-time free-form conversation over the customer's knowledge base
+  - LLM-generated responses for uncommon questions, redirected back to the business topic
+  - Lead capture into the customer CRM or marketing automation platform
+  - Handoff to a rep for demo or support
+  - Question capture and insight reporting to evolve the fact base
+  backend:
+  - Semantic search over customer Facts
+  - Large language model for natural conversational responses
+  - Conductor and Governance layer
+  data_ingestion: >-
+    An automated method obtains customer Facts and produces a customer-specific trained
+    semantic-search model.
+  api_hook:
+    webhook: chatLeadCreated
+    detail: asyncapi/conversica-webhooks.yml
+    note: >-
+      Chat-captured leads can be pushed in real time to a customer-hosted lead-creation
+      webhook. See the Website Chat lead-creation webhook article.
+    source: https://help.conversica.com/hc/en-us/articles/38828763556635-Implementing-a-Conversica-API-Lead-Creation-Webhook-for-Website-Chat
+  loader_url_published: false
+  loader_note: >-
+    Conversica does not publish the widget's script URL, initialisation snippet or
+    configuration options publicly; deployment is done with the implementation team.
+- family: CRM packages
+  name: Conversica managed packages and connectors
+  kind: platform-package
+  description: >-
+    Installable packages and connectors that surface Conversica inside a customer's CRM or
+    marketing platform rather than in the customer's own web pages - Salesforce managed
+    package (including a Salesforce Marketing Cloud app and a Server2Server package),
+    HubSpot, Marketo, Eloqua, Pardot, Microsoft Dynamics, and automotive CRMs including
+    DealerSocket, elead, VinSolutions, Dominion, DealerPeak, HigherGear and Velocify.
+  distribution: partner app marketplaces and Conversica implementation team
+  source: https://help.conversica.com/hc/en-us/categories/360003807612-Integrations
+  note: >-
+    Listed here because these are the packaged UI surfaces Conversica ships; they are not
+    client-side embeddable components and carry no public installation artefacts.
+x-evidence:
+  fetched: '2026-08-01'
+  urls:
+  - url: https://help.conversica.com/hc/en-us/articles/360048618012-Conversica-Website-Chat
+    http_status: 200
+  - url: https://help.conversica.com/hc/en-us/articles/38828763556635-Implementing-a-Conversica-API-Lead-Creation-Webhook-for-Website-Chat
+    http_status: 200

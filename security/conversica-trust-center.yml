@@ -1,0 +1,69 @@
+generated: '2026-08-01'
+method: searched
+probe: true
+url: https://trust.conversica.com/
+platform: Vanta Trust Center
+platform_evidence: >-
+  trust.conversica.com resolves via 65a0f6a2b4c7501f8979a89a.cname.vantatrust.com and the
+  page is served as a Vanta trust-report single-page application (assets.vanta.com bundle,
+  slug id 4frf8fa1b2ky3zeyxrzfp).
+sections:
+- url: https://trust.conversica.com/
+  name: Overview
+  http_status: 200
+- url: https://trust.conversica.com/controls
+  name: Controls
+  http_status: 200
+- url: https://trust.conversica.com/resources
+  name: Resources
+  http_status: 200
+certifications:
+- name: SOC 2 Type II
+  confidence: high
+  evidence: >-
+    Conversica announced completion of a SOC 2 Type II audit performed by A-lign, covering
+    the Trust Services Principles and Criteria for Security, and continues to reference SOC
+    2 on its website.
+  sources:
+  - https://www.globenewswire.com/news-release/2021/01/26/2164248/0/en/Conversica-Announces-SOC-2-Type-II-Certification.html
+  - https://www.conversica.com/
+- name: ISO 27001
+  confidence: medium
+  evidence: >-
+    An ISO 27001 certificate is listed among the documents on the Conversica trust centre
+    resources page. The document itself sits behind the Vanta access-request gate and was
+    not retrieved, so this is recorded as reported rather than inspected.
+  sources:
+  - https://trust.conversica.com/resources
+- name: GDPR
+  confidence: medium
+  kind: regulatory-program
+  evidence: Conversica's website states enterprise security compliance including GDPR alongside SOC 2.
+  sources:
+  - https://www.conversica.com/
+gated:
+  documents_require_request: true
+  note: >-
+    Vanta trust centres put certificate PDFs and security reports behind an access request
+    (often NDA-gated). The public shell lists what exists; the artefacts themselves were not
+    downloadable anonymously, and the Vanta GraphQL API rejects unsigned requests, so the
+    certification list above is what could be evidenced publicly - it is not asserted to be
+    complete.
+related:
+  privacy_policy: https://www.conversica.com/legal-info/privacy-policy
+  prohibited_use_policy: https://www.conversica.com/legal-info/prohibited-use-policy
+  responsible_disclosure: https://www.conversica.com/legal-info/responsible-disclosure-policy
+  california_notice: https://www.conversica.com/legal-info/notice-at-collection-of-personal-information-and-privacy-policy-for-california-personnel
+x-evidence:
+  fetched: '2026-08-01'
+  urls:
+  - url: https://trust.conversica.com/
+    http_status: 200
+    content_type: text/html
+  - url: https://trust.conversica.com/controls
+    http_status: 200
+  - url: https://trust.conversica.com/resources
+    http_status: 200
+  - url: https://api.vanta.com/v1/trust-pages/4frf8fa1b2ky3zeyxrzfp
+    http_status: 401
+    note: Vanta public API rejects anonymous reads; trust report GraphQL requires a signed request

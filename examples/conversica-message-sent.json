@@ -1,0 +1,9 @@
+{
+  "apiVersion": "7.2",
+  "id": "12345",
+  "clientId": "67890",
+  "action": "sent",
+  "date": "2019-05-10T05:57:44+00:00",
+  "subject": "Your online request",
+  "body": "Hi Sally, \nThanks for reaching out to us online. Would you like to schedule a demo with one of our representatives to learn more about our product? \nSincerely, \nJohn"
+}

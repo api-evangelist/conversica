@@ -1,0 +1,14 @@
+{
+  "apiVersion": "7.2",
+  "id": "12345",
+  "clientId": "67890",
+  "dateAdded": "2019-05-24T19:14:55+00:00",
+  "firstMessageDate": "2019-05-24T19:24:55+00:00",
+  "lastMessageDate": "2019-05-24T19:27:55+00:00",
+  "lastResponseDate": "2019-05-25T12:06:55+00:00",
+  "hotLead": true,
+  "hotLeadDate": "2019-05-25T12:06:55+00:00",
+  "discoveredPhone1": "5558675309",
+  "doNotEmail": false,
+  "smsOptIn": true
+}

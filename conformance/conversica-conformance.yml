@@ -1,0 +1,116 @@
+generated: '2026-08-01'
+method: derived
+source: openapi/conversica-integrations-api-openapi.yml
+docs: https://help.conversica.com/hc/en-us/articles/360048601712-Conversica-API-Integration-Manual
+description: >-
+  Cross-cutting standards posture for the Conversica Integrations API. Conforms flags are
+  derived from the captured contract and the published documentation; a false value means
+  the standard was checked for and not found, not that it was assumed absent.
+standards:
+- id: http-basic-auth-rfc7617
+  name: HTTP Basic authentication (RFC 7617)
+  conforms: true
+  evidence: >-
+    The API Integration Manual specifies HTTPS basic access authentication in both
+    directions; the OpenAPI declares a single http/basic security scheme.
+- id: rfc3339-datetimes
+  name: RFC 3339 date and time
+  conforms: true
+  evidence: >-
+    "All keys with a datetime type must contain UTC values following the RFC 3339 standard"
+    - API Integration Manual, Key Types and Values.
+- id: json
+  name: JSON payloads
+  conforms: true
+  evidence: All objects are JSON-encoded and posted with Content-type application/json.
+- id: tls
+  name: TLS in transit
+  conforms: true
+  evidence: >-
+    Live probe of integrations-api.conversica.com negotiates TLSv1.3 with HSTS max-age
+    31536000. See security/conversica-domain-security.yml.
+- id: oauth2
+  name: OAuth 2.0
+  conforms: partial
+  evidence: >-
+    Conversica documents OAuth 2.0 support for authenticating its outbound calls into a
+    customer's API, arranged through a technical account manager. No authorization or token
+    endpoints, grant types or scopes are published, and the Conversica-hosted ingest
+    endpoint itself is Basic-authenticated only.
+  source: https://help.conversica.com/hc/en-us/articles/5357137175835-OAuth-2-0-Authentication-with-Conversica
+- id: openid-connect
+  name: OpenID Connect
+  conforms: false
+  evidence: /.well-known/openid-configuration returns 404 on every probed Conversica host.
+- id: rfc9457-problem-details
+  name: RFC 9457 Problem Details for HTTP APIs
+  conforms: false
+  evidence: >-
+    No application/problem+json media type is documented. Errors are signalled by HTTP
+    status alone on the ingest endpoint, and by a bespoke status/message JSON envelope on
+    the Website Chat webhook.
+- id: rfc9116-security-txt
+  name: RFC 9116 security.txt
+  conforms: false
+  evidence: >-
+    404 on /.well-known/security.txt for www.conversica.com, conversica.com,
+    my.conversica.com and integrations-api.conversica.com, despite a published responsible
+    disclosure policy.
+- id: rfc8594-sunset-header
+  name: RFC 8594 Sunset header
+  conforms: false
+  evidence: >-
+    No Sunset or Deprecation header is documented. Change notice is contractual - 30 days
+    intended notice in the API Terms of Service.
+- id: rfc8615-well-known
+  name: RFC 8615 well-known URIs
+  conforms: false
+  evidence: No /.well-known/ document was served by any Conversica host. See well-known/conversica-well-known.yml.
+- id: a2a-agent-card
+  name: A2A Agent Card
+  conforms: false
+  evidence: >-
+    /.well-known/agent-card.json and /.well-known/agent.json return 404 on conversica.com,
+    www.conversica.com, my.conversica.com and integrations-api.conversica.com. SPA catch-all
+    200s on app.conversica.com and trust.conversica.com were HTML and were rejected.
+- id: mcp
+  name: Model Context Protocol
+  conforms: false
+  evidence: No hosted or published Conversica MCP server was found in the docs, registries or npm.
+- id: asyncapi
+  name: AsyncAPI
+  conforms: false
+  evidence: >-
+    A real webhook surface exists (Message, Lead Update, Website Chat lead creation) but no
+    AsyncAPI document is published. Captured as a webhook catalog instead.
+- id: idempotency-key
+  name: Idempotency key on unsafe requests
+  conforms: false
+  evidence: No idempotency header, request key or replay contract is documented for POST /json/.
+- id: pagination
+  name: Paginated collections
+  conforms: false
+  evidence: Not applicable - the API exposes no read or list operation.
+- id: soc2
+  name: SOC 2 Type II
+  conforms: true
+  kind: compliance-program
+  evidence: See security/conversica-trust-center.yml - SOC 2 Type II audit by A-lign, published on the trust centre.
+- id: iso-27001
+  name: ISO/IEC 27001
+  conforms: reported
+  kind: compliance-program
+  evidence: ISO 27001 certificate listed on https://trust.conversica.com/resources; the document itself is access-gated.
+- id: gdpr
+  name: GDPR
+  conforms: reported
+  kind: regulatory-program
+  evidence: Stated on conversica.com alongside SOC 2; privacy policy and California collection notice published.
+x-evidence:
+  fetched: '2026-08-01'
+  probes_summary: >-
+    Contract discovery ran /openapi.json, /openapi.yaml, /swagger.json, /api-docs and the
+    five standard /.well-known/ paths plus both agent-card paths and /llms.txt against
+    conversica.com, www.conversica.com, integrations-api.conversica.com,
+    my.conversica.com, app.conversica.com, api.conversica.com, help.conversica.com and
+    trust.conversica.com on 2026-08-01.

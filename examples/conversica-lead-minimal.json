@@ -1,0 +1,12 @@
+{
+  "apiVersion": "7.2",
+  "id": "12345",
+  "conversationId": "My Big Event 2019",
+  "firstName": "Sally",
+  "email": "sally@email.com",
+  "leadSource": "Big Events",
+  "leadStatus": "New",
+  "optOut": false,
+  "repId": "98765",
+  "repName": "John"
+}

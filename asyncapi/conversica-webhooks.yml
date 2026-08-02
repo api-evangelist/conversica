@@ -1,0 +1,90 @@
+generated: '2026-08-01'
+method: searched
+source: https://help.conversica.com/hc/en-us/articles/360048601712-Conversica-API-Integration-Manual
+spec_type: Webhooks
+asyncapi_published: false
+asyncapi_note: >-
+  Conversica publishes no AsyncAPI document. It does document a real outbound event
+  surface: the Conversica Platform POSTs Message and Lead Update objects to endpoints the
+  customer provides, plus an optional Website Chat lead-creation callback. That catalog is
+  captured here rather than fabricating an AsyncAPI spec.
+summary:
+  direction: conversica-to-customer
+  transport: HTTPS POST, JSON body
+  authentication: HTTP Basic access authentication (single username/password pair supplied by the customer, shared across all customer endpoints)
+  endpoints_owned_by: customer
+  subscription_model: >-
+    There is no self-serve webhook subscription UI. Customer endpoints are registered with
+    Conversica during implementation via the technical account manager; both endpoints must
+    share one credential pair and should use a consistent URL format.
+  delivery_guarantees_documented: false
+  signing_documented: false
+  retry_policy_documented: false
+webhooks:
+  - name: message
+    event: Message sent or received
+    description: >-
+      Fired each time the Conversica Assistant sends a message to a Lead or receives a
+      response from a Lead. The action field carries "sent" or "received".
+    method: POST
+    customer_endpoint_examples:
+      - https://api.customername.com/conversicaMessage/
+      - https://api.customername.com/conversica/message
+    payload_schema: openapi/conversica-integrations-api-openapi.yml#/components/schemas/Message
+    operation: receiveMessage
+    required_fields: [apiVersion, id, clientId, action, date, subject, body]
+    examples:
+      - examples/conversica-message-sent.json
+      - examples/conversica-message-received.json
+  - name: leadUpdate
+    event: Lead or Conversation state changed
+    description: >-
+      Fired when the state of a Lead or Conversation changes. Other than apiVersion, id and
+      clientId only the keys with updated values are sent, so consumers must treat every
+      other field as optional and merge partial updates.
+    method: POST
+    customer_endpoint_examples:
+      - https://api.customername.com/conversicaLead/
+      - https://api.customername.com/conversica/lead
+    payload_schema: openapi/conversica-integrations-api-openapi.yml#/components/schemas/LeadUpdate
+    operation: receiveLeadUpdate
+    required_fields: [apiVersion, id, clientId]
+    partial_updates: true
+    state_vocabulary: vocabulary/conversica-conversation-vocabulary.yml
+    examples:
+      - examples/conversica-lead-update-engagement.json
+      - examples/conversica-lead-update-stage.json
+  - name: chatLeadCreated
+    event: Website Chat captured a lead
+    description: >-
+      Optional Website Chat callback. When the chat agent captures a visitor, Conversica
+      POSTs the lead plus the full chat transcript. The receiving endpoint must reply with
+      a JSON object carrying status and message.
+    method: POST
+    customer_endpoint_examples:
+      - https://api.customername.com/conversicaCreate/
+      - https://api.customername.com/conversica/create
+    payload_schema: openapi/conversica-integrations-api-openapi.yml#/components/schemas/ChatLead
+    operation: receiveChatLead
+    required_fields: [firstName, lastName, email, conversationHistory]
+    response_schema: openapi/conversica-integrations-api-openapi.yml#/components/schemas/WebhookAck
+    response_status_codes: ['200', '400', '401', '500']
+    examples:
+      - examples/conversica-chat-lead.json
+      - examples/conversica-chat-webhook-ack.json
+    source: https://help.conversica.com/hc/en-us/articles/38828763556635-Implementing-a-Conversica-API-Lead-Creation-Webhook-for-Website-Chat
+x-evidence:
+  fetched: '2026-08-01'
+  urls:
+    - url: https://help.conversica.com/hc/en-us/articles/360048601712-Conversica-API-Integration-Manual
+      http_status: 200
+    - url: https://help.conversica.com/hc/en-us/articles/38828763556635-Implementing-a-Conversica-API-Lead-Creation-Webhook-for-Website-Chat
+      http_status: 200
+  probes:
+    - url: https://integrations-api.conversica.com/asyncapi.yaml
+      http_status: 404
+    - url: https://integrations-api.conversica.com/asyncapi.json
+      http_status: 302
+      note: redirect, not an AsyncAPI document
+    - url: https://www.conversica.com/asyncapi.yaml
+      http_status: 404

@@ -1,0 +1,61 @@
+generated: '2026-08-01'
+method: searched
+source: public package registries and the Conversica help centre
+description: >-
+  Conversica publishes no first-party client libraries. The documented integration path is
+  a raw HTTPS POST of a JSON object with Basic authentication - the API Integration Manual's
+  own quickstart is a curl/PHP snippet, not an SDK. Recording the negative result so a later
+  round does not re-run the same search.
+packages: []
+official_sdk_count: 0
+registries_checked:
+- registry: npm
+  query: conversica
+  url: https://registry.npmjs.org/-/v1/search?text=conversica
+  result: 0 packages
+- registry: PyPI
+  query: conversica
+  url: https://pypi.org/pypi/conversica/json
+  http_status: 404
+  result: no package
+- registry: GitHub
+  org: https://github.com/Conversica
+  result: >-
+    Organisation exists (created 2024-04-05) but publishes zero public repositories, so
+    there is no source-code, SDK or sample surface. No GitHubOrganization pointer is
+    claimed.
+- registry: Maven Central
+  result: not searched - no JVM SDK referenced anywhere in the docs
+- registry: NuGet
+  result: not searched - no .NET SDK referenced anywhere in the docs
+- registry: RubyGems
+  result: not searched - no Ruby SDK referenced anywhere in the docs
+- registry: Packagist
+  result: not searched - no PHP SDK referenced anywhere in the docs, despite the PHP quickstart
+third_party_connectors:
+- name: Tray.ai Conversica connector
+  vendor: Tray.ai
+  official: false
+  url: https://tray.ai/documentation/connectors/service/conversica
+- name: Appmixer Conversica connector
+  vendor: Appmixer
+  official: false
+  url: https://www.appmixer.com/connectors/conversica
+integration_path:
+  documented: >-
+    Direct HTTPS POST with Basic authentication, or one of Conversica's packaged CRM and
+    marketing-automation connectors (Salesforce, HubSpot, Marketo, Eloqua, Pardot, Microsoft
+    Dynamics, and the automotive CRMs). See components/conversica-components.yml.
+  quickstart_language: PHP (curl)
+  quickstart_source: https://help.conversica.com/hc/en-us/articles/360048601712-Conversica-API-Integration-Manual
+x-evidence:
+  fetched: '2026-08-01'
+  urls:
+  - url: https://registry.npmjs.org/-/v1/search?text=conversica
+    http_status: 200
+    result_total: 0
+  - url: https://pypi.org/pypi/conversica/json
+    http_status: 404
+  - url: https://api.github.com/orgs/Conversica/repos
+    http_status: 200
+    result_total: 0

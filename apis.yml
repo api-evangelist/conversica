@@ -1,18 +1,91 @@
 aid: conversica
 name: Conversica
-description: 'Conversica is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: >-
+  Conversica is an AI conversation automation company - "The Conversation Company" - whose
+  Revenue Digital Assistants and AI Agents hold two-way, natural-language conversations
+  with leads and customers over email, SMS and website chat to generate demand, answer
+  questions and drive renewals. Founded in 2007 as AutoFerret.com and renamed Conversica in
+  2014, the San Mateo company serves automotive, sports and entertainment, hospitality,
+  higher education and enterprise teams, and says its platform has powered more than 1.5
+  billion conversations for 2,000+ teams. Its integration surface is the Conversica
+  Integrations API - a JSON-over-HTTPS, Basic-authenticated endpoint that ingests Lead
+  objects, plus provider-initiated Message, Lead Update and Website Chat lead-creation
+  webhooks delivered to endpoints the customer hosts - alongside packaged connectors for
+  Salesforce, HubSpot, Marketo, Eloqua, Pardot, Microsoft Dynamics and automotive CRMs.
+image: https://cdn.prod.website-files.com/685300c814434f10e21dadd0/687ab25d596cea9ade1ebbc6_logo.png
 url: https://raw.githubusercontent.com/api-evangelist/conversica/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
 specificationVersion: '0.20'
 created: '2026-08-01'
 modified: '2026-08-01'
 tags:
 - Company
-apis: []
+- Artificial Intelligence
+- Conversational AI
+- AI Agents
+- Sales
+- Marketing
+- Lead Management
+- CRM
+- Marketing Automation
+- Customer Engagement
+- Messaging
+- SMS
+- Email
+- Chat
+- Automotive
+- Higher Education
+- Webhooks
+apis:
+- aid: conversica:integrations-api
+  name: Conversica Integrations API
+  description: >-
+    JSON-over-HTTPS integration surface for the Conversica Platform. A customer system posts
+    Lead objects to a single Conversica endpoint using HTTP Basic authentication, and
+    Conversica posts Message objects, Lead Update objects and optional Website Chat
+    lead-creation payloads back to endpoints the customer provides. Credentials are issued
+    by a Conversica technical account manager and applications must be approved by
+    Conversica before they are enabled.
+  humanURL: https://help.conversica.com/hc/en-us/sections/360012154451-Conversica-API
+  baseURL: https://integrations-api.conversica.com
+  image: https://cdn.prod.website-files.com/685300c814434f10e21dadd0/687ab25d596cea9ade1ebbc6_logo.png
+  tags:
+  - Leads
+  - Conversational AI
+  - Webhooks
+  - CRM
+  properties:
+  - type: OpenAPI
+    url: openapi/conversica-integrations-api-openapi.yml
+  - type: Overlay
+    url: overlays/conversica-integrations-api-overlay.yaml
+  - type: Documentation
+    url: https://help.conversica.com/hc/en-us/articles/360048601712-Conversica-API-Integration-Manual
+  - type: APIReference
+    url: https://help.conversica.com/hc/en-us/sections/360012154451-Conversica-API
+  - type: GettingStarted
+    url: https://help.conversica.com/hc/en-us/articles/360048680052-API-Implementation-Overview
+  - type: Authentication
+    url: authentication/conversica-authentication.yml
+  - type: Webhooks
+    url: asyncapi/conversica-webhooks.yml
+  - type: Examples
+    url: examples/_index.yml
+  - type: ErrorCatalog
+    url: errors/conversica-problem-types.yml
+  - type: Conventions
+    url: conventions/conversica-conventions.yml
+  - type: DataModel
+    url: data-model/conversica-data-model.yml
+  - type: Vocabulary
+    url: vocabulary/conversica-conversation-vocabulary.yml
+  - type: Sandbox
+    url: sandbox/conversica-sandbox.yml
+  - type: Lifecycle
+    url: lifecycle/conversica-lifecycle.yml
+  - type: TermsOfService
+    url: https://www.conversica.com/legal-info/conversica-api-terms-of-service
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -20,4 +93,67 @@ maintainers:
   email: info@apis.io
 common:
 - type: Website
-  url: https://forgeglobal.com/conversica_stock/
+  url: https://www.conversica.com
+- type: Documentation
+  url: https://help.conversica.com/hc/en-us/articles/360048601712-Conversica-API-Integration-Manual
+- type: APIReference
+  url: https://help.conversica.com/hc/en-us/sections/360012154451-Conversica-API
+- type: GettingStarted
+  url: https://help.conversica.com/hc/en-us/articles/360048680052-API-Implementation-Overview
+- type: Support
+  url: https://help.conversica.com/
+- type: Blog
+  url: https://www.conversica.com/blog
+- type: Login
+  url: https://my.conversica.com/
+- type: TermsOfService
+  url: https://www.conversica.com/legal-info/terms
+- type: PrivacyPolicy
+  url: https://www.conversica.com/legal-info/privacy-policy
+- type: Security
+  url: https://www.conversica.com/legal-info/responsible-disclosure-policy
+- type: VulnerabilityDisclosure
+  url: security/conversica-vulnerability-disclosure.yml
+- type: TrustCenter
+  url: security/conversica-trust-center.yml
+- type: Compliance
+  url: https://trust.conversica.com/
+- type: DomainSecurity
+  url: security/conversica-domain-security.yml
+- type: Authentication
+  url: authentication/conversica-authentication.yml
+- type: Conventions
+  url: conventions/conversica-conventions.yml
+- type: Conformance
+  url: conformance/conversica-conformance.yml
+- type: Lifecycle
+  url: lifecycle/conversica-lifecycle.yml
+- type: Deprecation
+  url: https://www.conversica.com/legal-info/conversica-api-terms-of-service
+- type: ErrorCatalog
+  url: errors/conversica-problem-types.yml
+- type: Webhooks
+  url: asyncapi/conversica-webhooks.yml
+- type: Vocabulary
+  url: vocabulary/conversica-conversation-vocabulary.yml
+- type: Examples
+  url: examples/_index.yml
+- type: DataModel
+  url: data-model/conversica-data-model.yml
+- type: Sandbox
+  url: sandbox/conversica-sandbox.yml
+- type: Components
+  url: components/conversica-components.yml
+- type: Packages
+  url: packages/conversica-packages.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: LLMsTxt
+  url: llms/conversica-llms.txt
+- type: AgenticAccess
+  url: agentic-access/conversica-agentic-access.yml
+x-enrichment:
+  date: '2026-08-01'
+  status: enriched
+  artifacts_added: 32
+  pass: local-v1

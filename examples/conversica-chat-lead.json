@@ -1,0 +1,6 @@
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "john.doe@example.com",
+  "conversationHistory": "2025-05-23T11:40:07 John Doe: I'm interested in your product.\n2025-05-23T11:40:11 Conversica (Assistant): Great! Let me get some details..."
+}

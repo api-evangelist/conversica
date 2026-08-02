@@ -1,0 +1,25 @@
+generated: '2026-08-01'
+method: generated
+source: openapi/conversica-integrations-api-openapi.yml
+description: >-
+  Packaged agent skills for the Conversica Integrations API. Every step is grounded in an
+  operationId that exists in the captured contract, and in conventions, error and vocabulary
+  rules Conversica actually publishes. Conversica ships no AGENTS.md or first-party skill
+  files - a search of the help centre and website found none.
+skills:
+- file: conversica-post-lead.md
+  name: Post a lead to a Conversica Assistant
+  api: openapi/conversica-integrations-api-openapi.yml
+  operations: [postLead]
+  direction: customer-to-conversica
+- file: conversica-receive-conversation-events.md
+  name: Receive Conversica message and lead-update webhooks
+  api: openapi/conversica-integrations-api-openapi.yml
+  operations: [receiveMessage, receiveLeadUpdate, receiveChatLead]
+  direction: conversica-to-customer
+provider_published_skills:
+  found: false
+  searched:
+  - conversica.com sitemap (51 URLs) - no AGENTS.md, skills or agent-instructions page
+  - Conversica help centre article search - no packaged agent skill or prompt files
+  - github.com/Conversica - 0 public repositories
