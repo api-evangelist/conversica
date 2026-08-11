@@ -92,6 +92,8 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: MCPServer
+  url: mcp/conversica-mcp.yml
 - type: Website
   url: https://www.conversica.com
 - type: Documentation
