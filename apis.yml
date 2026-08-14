@@ -18,7 +18,7 @@ x-type: company
 x-source: harvest:secondary-market
 specificationVersion: '0.20'
 created: '2026-08-01'
-modified: '2026-08-01'
+modified: '2026-08-13'
 tags:
 - Company
 - Artificial Intelligence
@@ -92,8 +92,6 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
-- type: MCPServer
-  url: mcp/conversica-mcp.yml
 - type: Website
   url: https://www.conversica.com
 - type: Documentation
@@ -148,6 +146,10 @@ common:
   url: components/conversica-components.yml
 - type: Packages
   url: packages/conversica-packages.yml
+- type: RateLimits
+  url: rate-limits/conversica-rate-limits.yml
+- type: Plans
+  url: plans/conversica-plans-pricing.yml
 - type: AgentSkill
   url: skills/_index.yml
 - type: LLMsTxt
@@ -155,7 +157,13 @@ common:
 - type: AgenticAccess
   url: agentic-access/conversica-agentic-access.yml
 x-enrichment:
-  date: '2026-08-01'
+  date: '2026-08-13'
   status: enriched
-  artifacts_added: 32
+  artifacts_added: 2
   pass: local-v1
+  note: >-
+    Round 2. Added rate-limits and plans as measured zeros, upgraded the error catalog and
+    authentication profile with a live-probed undocumented JSON error envelope, and REMOVED
+    the MCPServer pointer added by the 2026-08-11 MCP sweep - mcp/conversica-mcp.yml is an
+    explicit candidate design (deployment.mode: none, published.server_exists: false) and
+    Conversica ships no MCP server.
