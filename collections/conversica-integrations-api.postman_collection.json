@@ -1,0 +1,246 @@
+{
+  "item": [
+    {
+      "id": "22cc5137-8546-4f22-a64e-09c18d1d2164",
+      "name": "Leads",
+      "description": {
+        "content": "Posting Lead object data into the Conversica Platform.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "3f392d2d-4129-464b-a3af-dca59677a232",
+          "name": "Post a Lead to the Conversica Platform",
+          "request": {
+            "name": "Post a Lead to the Conversica Platform",
+            "description": {
+              "content": "Sends a Lead object to Conversica so a Conversica Assistant can begin (or continue)\na conversation with that Lead. The endpoint accepts a JSON object; keys with a\n`datetime` type must be UTC values following RFC 3339, and keys with a `boolean`\ntype must be `true` or `false`.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "json",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"apiVersion\": \"<string>\",\n  \"id\": \"<string>\",\n  \"conversationId\": \"<string>\",\n  \"firstName\": \"<string>\",\n  \"email\": \"<string>\",\n  \"leadSource\": \"<string>\",\n  \"repName\": \"<string>\",\n  \"leadStatus\": \"<string>\",\n  \"optOut\": \"<boolean>\",\n  \"repId\": \"<string>\",\n  \"repEmail\": \"<string>\",\n  \"clientId\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"homePhone\": \"<string>\",\n  \"workPhone\": \"<string>\",\n  \"cellPhone\": \"<string>\",\n  \"address\": \"<string>\",\n  \"city\": \"<string>\",\n  \"state\": \"<string>\",\n  \"zip\": \"<string>\",\n  \"leadType\": \"<string>\",\n  \"date\": \"<dateTime>\",\n  \"smsOptOut\": \"<boolean>\",\n  \"smsOptIn\": \"<boolean>\",\n  \"stopMessaging\": \"<boolean>\",\n  \"skipToFollowup\": \"<boolean>\",\n  \"leadSubStatus\": \"<string>\",\n  \"appointmentStatus\": \"<string>\",\n  \"appointmentDate\": \"<dateTime>\",\n  \"bdcRepId\": \"<string>\",\n  \"bdcRepName\": \"<string>\",\n  \"bdcRepEmail\": \"<string>\",\n  \"serviceRepId\": \"<string>\",\n  \"serviceRepName\": \"<string>\",\n  \"serviceRepEmail\": \"<string>\",\n  \"year\": \"<string>\",\n  \"make\": \"<string>\",\n  \"model\": \"<string>\",\n  \"vin\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "374da277-0697-466d-b25d-daf714442b95",
+              "name": "OK - the request was successful.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "json",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"apiVersion\": \"7.2\",\n  \"id\": \"12345\",\n  \"conversationId\": \"My Big Event 2019\",\n  \"firstName\": \"Sally\",\n  \"email\": \"sally@email.com\",\n  \"leadSource\": \"Big Events\",\n  \"leadStatus\": \"New\",\n  \"optOut\": false,\n  \"repId\": \"98765\",\n  \"repName\": \"John\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "8f3ca1e1-6563-4154-82e7-517f8c2b7d9d",
+              "name": "Bad Request - the request could not be understood due to an error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "json",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"apiVersion\": \"7.2\",\n  \"id\": \"12345\",\n  \"conversationId\": \"My Big Event 2019\",\n  \"firstName\": \"Sally\",\n  \"email\": \"sally@email.com\",\n  \"leadSource\": \"Big Events\",\n  \"leadStatus\": \"New\",\n  \"optOut\": false,\n  \"repId\": \"98765\",\n  \"repName\": \"John\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "6ecea78b-3891-4498-9c9f-627d2e962a97",
+              "name": "Unauthorized - the request could not be processed due to authentication.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "json",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"apiVersion\": \"7.2\",\n  \"id\": \"12345\",\n  \"conversationId\": \"My Big Event 2019\",\n  \"firstName\": \"Sally\",\n  \"email\": \"sally@email.com\",\n  \"leadSource\": \"Big Events\",\n  \"leadStatus\": \"New\",\n  \"optOut\": false,\n  \"repId\": \"98765\",\n  \"repName\": \"John\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://integrations-api.conversica.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "dd34496d-ab8c-4c1b-8bcf-e0e395d12444",
+    "name": "Conversica Integrations API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Conversica Integrations API lets a customer system (CRM or marketing automation\nplatform) transport Lead data into the Conversica Platform, and receive Lead Update\nand Message data back from the Conversica Platform. All traffic is JSON-encoded\nPOST over HTTPS with HTTP Basic access authentication.\n\nDirection of travel:\n\n* Customer System -> Conversica: `POST https://integrations-api.conversica.com/json/`\n  with a Lead object.\n* Conversica -> Customer System: Conversica POSTs Message objects and Lead Update\n  objects to two endpoints the customer provides (see the `webhooks` section). The\n  Website Chat lead-creation webhook is a third, optional customer endpoint.\n\nCredentials are issued by a Conversica technical account manager; there is no\nself-serve signup for this API. Applications must be tested and approved by\nConversica before they are enabled.\n\n\nContact Support:\n Name: Conversica Support\n Email: support@conversica.com",
+      "type": "text/plain"
+    }
+  }
+}

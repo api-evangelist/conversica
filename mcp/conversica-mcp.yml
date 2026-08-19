@@ -2,17 +2,16 @@ generated: '2026-08-01'
 method: derived
 status: candidate
 source: openapi/conversica-integrations-api-openapi.yml
-description: >-
-  Conversica publishes NO Model Context Protocol server. This file is an API Evangelist
-  candidate design derived from the captured contract - what a Conversica MCP server would
-  expose if one existed - and is deliberately NOT wired as a `MCPServer` pointer in
-  apis.yml, because pointing at a server that does not exist would misreport Conversica's
-  agent surface.
+description: Conversica publishes NO Model Context Protocol server. This file is an API Evangelist candidate
+  design derived from the captured contract - what a Conversica MCP server would expose if one existed
+  - and is deliberately NOT wired as a `MCPServer` pointer in apis.yml, because pointing at a server that
+  does not exist would misreport Conversica's agent surface.
 published:
   server_exists: false
   searched:
   - source: Conversica help centre, Zendesk article search for "MCP"
-    result: 0 results (a "Model Context Protocol" phrase search returns only fuzzy word matches on unrelated articles)
+    result: 0 results (a "Model Context Protocol" phrase search returns only fuzzy word matches on unrelated
+      articles)
   - source: conversica.com sitemap (51 URLs)
     result: no developer or MCP page
   - source: npm registry search for "conversica"
@@ -34,10 +33,8 @@ candidate:
     input_schema: openapi/conversica-integrations-api-openapi.yml#/components/schemas/Lead
     action_class: acting
     consequence: write
-    note: >-
-      The only Conversica-hosted operation. Everything else in the Conversica contract is a
-      provider-initiated webhook the customer receives, which is not expressible as an MCP
-      tool.
+    note: The only Conversica-hosted operation. Everything else in the Conversica contract is a provider-initiated
+      webhook the customer receives, which is not expressible as an MCP tool.
   not_expressible:
   - surface: receiveMessage
     reason: inbound webhook delivered to a customer-hosted endpoint; not a callable Conversica operation
@@ -45,15 +42,12 @@ candidate:
     reason: inbound webhook delivered to a customer-hosted endpoint; not a callable Conversica operation
   - surface: receiveChatLead
     reason: inbound webhook delivered to a customer-hosted endpoint; not a callable Conversica operation
-  read_surface: >-
-    None. Conversica exposes no read or list operation, so a candidate MCP server would be
-    write-only - an agent could push a lead in but could not query conversation state
-    except by receiving webhooks.
+  read_surface: None. Conversica exposes no read or list operation, so a candidate MCP server would be
+    write-only - an agent could push a lead in but could not query conversation state except by receiving
+    webhooks.
 tool_crosswalk: null
-tool_crosswalk_note: >-
-  No crosswalk artefact is emitted: a crosswalk binds real MCP tools (or GraphQL fields) to
-  backing REST operations, and Conversica publishes neither an MCP server nor a GraphQL
-  endpoint.
+tool_crosswalk_note: 'No crosswalk artefact is emitted: a crosswalk binds real MCP tools (or GraphQL fields)
+  to backing REST operations, and Conversica publishes neither an MCP server nor a GraphQL endpoint.'
 x-evidence:
   fetched: '2026-08-01'
   urls:
@@ -66,3 +60,8 @@ x-evidence:
   - url: https://api.github.com/orgs/Conversica/repos
     http_status: 200
     result_total: 0
+deployment:
+  mode: none
+  verified: derived
+  checked: '2026-08-12'
+  source: catalog MCP census

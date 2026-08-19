@@ -1,0 +1,62 @@
+generated: '2026-08-13'
+method: searched
+source: https://www.conversica.com/sitemap.xml
+description: >-
+  Conversica publishes no pricing page and no plan tiers. There is no /pricing or /plans URL
+  on the site, neither appears in the sitemap, and the buying path everywhere on the site is
+  a demo request or a contact form. Pricing is quoted by sales against negotiated
+  conversation / lead volume. Recorded as an explicit zero so the absence is measured.
+plan_count: 0
+plans: []
+pricing_published: false
+pricing_model:
+  stated: false
+  inferred_unit: null
+  note: >-
+    Conversica describes its commercial unit nowhere on its public site. Its own marketing
+    speaks in conversations, leads and Revenue Digital Assistants, but no list price, tier,
+    quota, seat rate or overage rate is published for any of them. No number here is
+    inferred from third-party resellers or review sites - only what Conversica itself
+    publishes is recorded.
+buying_path:
+  self_serve_signup: false
+  free_tier: false
+  free_trial_published: false
+  routes:
+  - name: Request a demo
+    url: https://www.conversica.com/request-a-demo
+  - name: Contact
+    url: https://www.conversica.com/contact
+  - name: Program landing pages (automotive)
+    urls:
+    - https://www.conversica.com/fill-your-service-bay-program
+    - https://www.conversica.com/event-follow-up-program
+    - https://www.conversica.com/internet-lead-ai-follow-up-program
+    note: >-
+      Packaged program pages that describe an offer and end in a meeting booking. Scanned on
+      2026-08-13 for currency amounts, "per month", "per seat", "starting at" and "per lead"
+      - none present.
+api_access_gate:
+  self_serve: false
+  note: >-
+    API credentials are not purchasable or self-provisionable. They are issued by a
+    Conversica technical account manager to an existing customer, and the API Terms of
+    Service require Conversica to test and approve the application before it may be enabled.
+    There is therefore no API plan, quota or price to record.
+  source: https://www.conversica.com/legal-info/conversica-api-terms-of-service
+x-evidence:
+  fetched: '2026-08-13'
+  urls:
+  - url: https://www.conversica.com/pricing
+    http_status: 404
+  - url: https://www.conversica.com/plans
+    http_status: 404
+  - url: https://www.conversica.com/sitemap.xml
+    http_status: 200
+    note: 63 URLs; no pricing, plans, packages or cost page
+  - url: https://www.conversica.com/contact
+    http_status: 200
+    note: contact form only, no prices
+  - url: https://help.conversica.com/api/v2/help_center/articles/search.json?query=pricing
+    http_status: 200
+    note: 13 help-centre results, none publishing a price, tier or quota

@@ -70,6 +70,26 @@ false_positives_rejected:
 - host: https://api.conversica.com
   observed_status: 403
   reason: Host answers 403 to every path probed; no document served.
+recheck:
+  date: '2026-08-13'
+  result: unchanged - still no /.well-known/ document on any host
+  probes:
+  - {url: 'https://www.conversica.com/.well-known/agent-card.json', status: 404, body: 'HTML: "Invalid .well-known request"'}
+  - {url: 'https://www.conversica.com/.well-known/agent.json', status: 404, body: 'HTML: "Invalid .well-known request"'}
+  - {url: 'https://www.conversica.com/.well-known/security.txt', status: 404}
+  - {url: 'https://www.conversica.com/llms.txt', status: 404, note: Webflow site 404 page, HTML}
+  - {url: 'https://help.conversica.com/llms.txt', status: 404}
+  - {url: 'https://integrations-api.conversica.com/.well-known/agent-card.json', status: 404}
+  - {url: 'https://integrations-api.conversica.com/openapi.json', status: 404, note: redirects to /site/login then 404s}
+  - {url: 'https://integrations-api.conversica.com/swagger.json', status: 404, note: redirects to /site/login then 404s}
+  - {url: 'https://integrations-api.conversica.com/api-docs', status: 404}
+  - {url: 'https://developer.conversica.com/', status: 0, note: DNS does not resolve}
+  - {url: 'https://docs.conversica.com/', status: 0, note: DNS does not resolve}
+  - {url: 'https://status.conversica.com/', status: 0, note: DNS does not resolve}
+  note: >-
+    www.conversica.com answers every /.well-known/* path with an 88-byte HTML page reading
+    "Invalid .well-known request" under a 404 status - a Webflow behaviour, correctly a miss.
 x-evidence:
   fetched: '2026-08-01'
+  rechecked: '2026-08-13'
   method: HTTPS GET with a browser User-Agent, 12s timeout, redirects followed

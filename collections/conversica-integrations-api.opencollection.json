@@ -1,0 +1,45 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Conversica Integrations API",
+    "version": "7.2"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Leads",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Post a Lead to the Conversica Platform",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://integrations-api.conversica.com/json/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Sends a Lead object to Conversica so a Conversica Assistant can begin (or continue)\na conversation with that Lead. The endpoint accepts a JSON object; keys with a\n`datetime` type must be UTC values following RFC 3339, and keys with a `boolean`\ntype must be `true` or `false`.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

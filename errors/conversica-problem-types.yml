@@ -1,5 +1,5 @@
-generated: '2026-08-01'
-method: derived
+generated: '2026-08-13'
+method: probed
 source: openapi/conversica-integrations-api-openapi.yml
 docs: https://help.conversica.com/hc/en-us/articles/360048601712-Conversica-API-Integration-Manual
 format: http-status
@@ -8,12 +8,39 @@ description: >-
   Conversica publishes a short status-code table for its ingest endpoint and a
   status/message acknowledgement envelope for the Website Chat lead-creation webhook. There
   is no problem+json media type, no error type URIs, no machine-readable error codes and no
-  error body schema for the ingest endpoint. What follows is exactly what is documented -
-  no error catalogue has been invented to fill the gap.
+  error body schema for the ingest endpoint. What follows is exactly what is documented,
+  plus the error envelope OBSERVED on the live endpoint on 2026-08-13 - the ingest endpoint
+  does return a JSON body, which the documentation does not mention. No error catalogue has
+  been invented to fill the gap.
 envelope:
   ingest:
     body_documented: false
-    signal: HTTP status code
+    body_observed: true
+    media_type: application/json; charset=utf-8
+    signal: HTTP status code plus an undocumented JSON body
+    observed_fields:
+    - name: message
+      type: string
+      description: Human-readable failure message. Present on every observed error response.
+    - name: status
+      type: boolean
+      description: >-
+        Observed as false on the 405 response. Note this is a BOOLEAN, and is a different
+        field from the Website Chat ack envelope's status, which is the HTTP code as a
+        STRING - the two envelopes are not the same shape.
+      note: not observed on the 401 response, so it is not reliably present
+    observed_examples:
+    - http_status: 405
+      body: '{"message":"GET method is not allowed for this resource. The following methods are available: POST","status":false}'
+    - http_status: 401
+      body: '{"message":"Invalid username or password. Additional failed attempts may result in your account being locked or your IP address being banned."}'
+      headers:
+        www-authenticate: Basic realm="Conversica"
+    probed: '2026-08-13'
+    caution: >-
+      The observed body shape is undocumented and therefore uncontracted - Conversica has
+      published no schema for it and may change it without notice. Consumers should branch
+      on the HTTP status, not on the body.
   webhook_ack:
     media_type: application/json
     schema: openapi/conversica-integrations-api-openapi.yml#/components/schemas/WebhookAck
@@ -37,10 +64,25 @@ problems:
     title: Unauthorized
     detail: The request could not be processed due to authentication.
     source_operation: openapi/conversica-integrations-api-openapi.yml#postLead
+    observed_body: '{"message":"Invalid username or password. Additional failed attempts may result in your account being locked or your IP address being banned."}'
+    observed_headers:
+      www-authenticate: Basic realm="Conversica"
     remediation: >-
       Confirm the HTTP Basic credentials issued by your Conversica technical account
       manager are being sent, that the username meets the five-character minimum, and that
-      the request is over HTTPS.
+      the request is over HTTPS. Do NOT retry a failed credential in a loop - the observed
+      401 body warns that repeated failures can lock the account or ban the source IP.
+  - status: 405
+    title: Method Not Allowed
+    detail: >-
+      Observed, not documented. Any method other than POST on /json/ returns 405 with an
+      Allow: POST header and a JSON body.
+    source_operation: openapi/conversica-integrations-api-openapi.yml#postLead
+    observed_body: '{"message":"GET method is not allowed for this resource. The following methods are available: POST","status":false}'
+    observed_headers:
+      allow: POST
+    probed: '2026-08-13'
+    remediation: Use POST. The ingest endpoint exposes no readable resource at /json/.
   - status: 400
     title: Invalid request data
     detail: Returned by the customer's Website Chat lead-creation endpoint when payload validation fails.
@@ -62,15 +104,31 @@ problems:
 gaps:
   - No application-level error codes or error identifiers are published.
   - No 403, 404, 409, 422, 429 or 5xx behaviour is documented for POST /json/.
+  - >-
+    The ingest endpoint returns a JSON error body that the documentation never mentions and
+    never schemas, and its `status` field is a boolean where the Website Chat ack envelope's
+    `status` is an HTTP code as a string. Two envelopes, one field name, two types.
   - No retry or backoff guidance is published for either direction.
   - >-
     Delivery failure semantics are surfaced operationally rather than as API errors -
     undeliverable leads land in the Unworkable and Lead Stopped conversation stages (see
     vocabulary/conversica-conversation-vocabulary.yml).
 x-evidence:
-  fetched: '2026-08-01'
+  fetched: '2026-08-13'
   urls:
     - url: https://help.conversica.com/hc/en-us/articles/360048601712-Conversica-API-Integration-Manual
       http_status: 200
+      fetched: '2026-08-01'
     - url: https://help.conversica.com/hc/en-us/articles/38828763556635-Implementing-a-Conversica-API-Lead-Creation-Webhook-for-Website-Chat
       http_status: 200
+      fetched: '2026-08-01'
+    - url: https://integrations-api.conversica.com/json/
+      method: GET
+      http_status: 405
+      fetched: '2026-08-13'
+      note: live probe - undocumented JSON error body observed
+    - url: https://integrations-api.conversica.com/json/
+      method: POST
+      http_status: 401
+      fetched: '2026-08-13'
+      note: live probe with no credentials - undocumented JSON error body and Basic realm observed

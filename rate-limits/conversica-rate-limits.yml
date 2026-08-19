@@ -1,0 +1,80 @@
+generated: '2026-08-13'
+method: probed
+source: https://www.conversica.com/legal-info/conversica-api-terms-of-service
+docs: https://help.conversica.com/hc/en-us/articles/360048601712-Conversica-API-Integration-Manual
+description: >-
+  Conversica publishes NO numeric rate limit, no window, no burst allowance and no
+  rate-limit response headers for the Integrations API. The only published statement is a
+  contractual prohibition in the API Terms of Service, and a live probe of the ingest
+  endpoint returns no RateLimit-* or X-RateLimit-* headers in either the 405 or the 401
+  path. An honest zero is recorded here rather than an omitted file, so the absence is
+  measured rather than assumed.
+limit_count: 0
+limits: []
+published_limits: false
+response_headers:
+  documented: false
+  observed: []
+  probed_headers:
+  - RateLimit-Limit
+  - RateLimit-Remaining
+  - RateLimit-Reset
+  - X-RateLimit-Limit
+  - X-RateLimit-Remaining
+  - X-RateLimit-Reset
+  - Retry-After
+  note: >-
+    None of the above appeared on any live response from
+    https://integrations-api.conversica.com/json/. The endpoint answers with date,
+    content-type, content-length, server, allow, expires, cache-control, pragma and (on 401)
+    www-authenticate only.
+exhaustion_status_code: null
+exhaustion_note: >-
+  No 429 behaviour is documented and none was observed. The Integration Manual's status
+  table lists only 200, 400 and 401 for POST /json/.
+contractual_limit:
+  published: true
+  url: https://www.conversica.com/legal-info/conversica-api-terms-of-service
+  quote: >-
+    "attempt to use our APIs in a manner that exceeds rate limits, or constitutes excessive
+    or abusive usage"
+  note: >-
+    The Terms of Service forbid exceeding "rate limits" without ever publishing what those
+    limits are, so a consumer cannot determine compliance from the published surface. This
+    is a documentation gap to raise with the provider, not a scored limit.
+abuse_controls:
+  observed: true
+  mechanism: authentication lockout and IP ban
+  evidence: >-
+    A live unauthenticated POST to https://integrations-api.conversica.com/json/ returns 401
+    with the body "Invalid username or password. Additional failed attempts may result in
+    your account being locked or your IP address being banned." - so the enforced throttle on
+    this endpoint is a credential/IP abuse control, not a published request quota.
+  probed: '2026-08-13'
+volume_model:
+  note: >-
+    Conversica's commercial unit is lead / conversation volume negotiated per contract, not
+    API calls. No lead-volume quota, overage rate or burst allowance is published on any
+    Conversica page - see plans/conversica-plans-pricing.yml.
+gaps:
+- No numeric request limit, window or burst is published for POST /json/.
+- No rate-limit signalling headers are returned, so an agent cannot pace itself at runtime.
+- No 429 status, Retry-After or backoff guidance is published in either direction.
+- No delivery-rate or retry policy is published for the Conversica-to-customer webhooks.
+x-evidence:
+  fetched: '2026-08-13'
+  urls:
+  - url: https://integrations-api.conversica.com/json/
+    method: GET
+    http_status: 405
+    note: 'allow: POST; no rate-limit headers present; body {"message":"GET method is not allowed for this resource. The following methods are available: POST","status":false}'
+  - url: https://integrations-api.conversica.com/json/
+    method: POST
+    http_status: 401
+    note: 'www-authenticate: Basic realm="Conversica"; no rate-limit headers present'
+  - url: https://www.conversica.com/legal-info/conversica-api-terms-of-service
+    http_status: 200
+    note: contractual rate-limit clause with no published numbers
+  - url: https://help.conversica.com/api/v2/help_center/en-us/articles/360048601712.json
+    http_status: 200
+    note: Integration Manual full text retrieved via the Zendesk API; contains no rate, throttle, quota or 429 language

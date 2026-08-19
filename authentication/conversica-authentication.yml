@@ -66,6 +66,21 @@ oauth2:
     Because no endpoints, grant types or scopes are published, no scopes artifact is
     derivable and derive-oauth-scopes.py correctly returns zero.
   source: https://help.conversica.com/hc/en-us/articles/5357137175835-OAuth-2-0-Authentication-with-Conversica
+observed:
+  probed: '2026-08-13'
+  endpoint: https://integrations-api.conversica.com/json/
+  challenge_header: 'www-authenticate: Basic realm="Conversica"'
+  unauthenticated_status: 401
+  unauthenticated_body: '{"message":"Invalid username or password. Additional failed attempts may result in your account being locked or your IP address being banned."}'
+  lockout_policy:
+    published: false
+    observed_warning: true
+    note: >-
+      The live 401 warns that repeated failures may lock the account or ban the source IP.
+      No threshold, lockout duration or unban path is published anywhere in the help centre,
+      so a client cannot implement a safe retry policy from the documented surface. Treat 401
+      as terminal, not retryable.
+  detail: errors/conversica-problem-types.yml
 not_supported:
   api_keys: true
   bearer_tokens: true

@@ -96,16 +96,24 @@ request_tracing:
 rate_limiting:
   documented_limits: false
   signaling_headers: null
+  headers_observed: false
   note: >-
     The API Terms of Service prohibit "excessive or abusive usage" and use of the APIs "in
     a manner that exceeds rate limits", but no numeric limit, window or response header is
-    published. No rate-limits artifact is derivable.
+    published. A live probe on 2026-08-13 confirmed no RateLimit-*, X-RateLimit-* or
+    Retry-After header on either the 405 or the 401 response. The only enforcement observed
+    is a credential-lockout / IP-ban warning on repeated auth failure.
   source: https://www.conversica.com/legal-info/conversica-api-terms-of-service
+  detail: rate-limits/conversica-rate-limits.yml
 error_envelope:
   inbound:
-    style: HTTP status code only
+    style: HTTP status code, plus an undocumented JSON body
     documented_codes: [200, 400, 401]
-    body: No error body schema is published for POST /json/.
+    observed_codes: [401, 405]
+    body: >-
+      No error body schema is published for POST /json/, but the endpoint does return one -
+      a JSON object with a message string (and, on 405, a boolean status). Undocumented and
+      therefore uncontracted; branch on the HTTP status. See errors/conversica-problem-types.yml.
   outbound_ack:
     style: JSON object with status and message
     applies_to: the customer's Website Chat lead-creation endpoint
