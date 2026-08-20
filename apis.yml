@@ -36,6 +36,24 @@ tags:
 - Chat
 - Automotive
 - Higher Education
+- Webhook
+tags_raw:
+- Company
+- Artificial Intelligence
+- Conversational AI
+- AI Agents
+- Sales
+- Marketing
+- Lead Management
+- CRM
+- Marketing Automation
+- Customer Engagement
+- Messaging
+- SMS
+- Email
+- Chat
+- Automotive
+- Higher Education
 - Webhooks
 apis:
 - aid: conversica:integrations-api
@@ -51,6 +69,11 @@ apis:
   baseURL: https://integrations-api.conversica.com
   image: https://cdn.prod.website-files.com/685300c814434f10e21dadd0/687ab25d596cea9ade1ebbc6_logo.png
   tags:
+  - Leads
+  - Conversational AI
+  - Webhook
+  - CRM
+  tags_raw:
   - Leads
   - Conversational AI
   - Webhooks
