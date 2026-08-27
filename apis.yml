@@ -56,35 +56,57 @@ tags_raw:
 - Higher Education
 - Webhooks
 apis:
-- aid: conversica:integrations-api
-  name: Conversica Integrations API
+- aid: conversica:conversica-conversica-integrations-api-api
+  name: Conversica Conversica Integrations API
   description: >-
-    JSON-over-HTTPS integration surface for the Conversica Platform. A customer system posts
-    Lead objects to a single Conversica endpoint using HTTP Basic authentication, and
-    Conversica posts Message objects, Lead Update objects and optional Website Chat
-    lead-creation payloads back to endpoints the customer provides. Credentials are issued
-    by a Conversica technical account manager and applications must be approved by
-    Conversica before they are enabled.
+    The Conversica Integrations API API from Conversica — 0 operation(s) for conversica integrations api.
   humanURL: https://help.conversica.com/hc/en-us/sections/360012154451-Conversica-API
   baseURL: https://integrations-api.conversica.com
-  image: https://cdn.prod.website-files.com/685300c814434f10e21dadd0/687ab25d596cea9ade1ebbc6_logo.png
   tags:
-  - Leads
-  - Conversational AI
-  - Webhook
-  - CRM
-  tags_raw:
-  - Leads
-  - Conversational AI
-  - Webhooks
-  - CRM
+  - Conversica Integrations API
   properties:
   - type: OpenAPI
-    url: openapi/conversica-integrations-api-openapi.yml
-  - type: Overlay
-    url: overlays/conversica-integrations-api-overlay.yaml
+    url: openapi/conversica-conversica-integrations-api-api-openapi.yml
   - type: Documentation
-    url: https://help.conversica.com/hc/en-us/articles/360048601712-Conversica-API-Integration-Manual
+    url: >-
+      https://help.conversica.com/hc/en-us/articles/360048601712-Conversica-API-Integration-Manual
+  - type: APIReference
+    url: https://help.conversica.com/hc/en-us/sections/360012154451-Conversica-API
+  - type: GettingStarted
+    url: https://help.conversica.com/hc/en-us/articles/360048680052-API-Implementation-Overview
+  - type: Authentication
+    url: authentication/conversica-authentication.yml
+  - type: Webhooks
+    url: asyncapi/conversica-webhooks.yml
+  - type: Examples
+    url: examples/_index.yml
+  - type: ErrorCatalog
+    url: errors/conversica-problem-types.yml
+  - type: Conventions
+    url: conventions/conversica-conventions.yml
+  - type: DataModel
+    url: data-model/conversica-data-model.yml
+  - type: Vocabulary
+    url: vocabulary/conversica-conversation-vocabulary.yml
+  - type: Sandbox
+    url: sandbox/conversica-sandbox.yml
+  - type: Lifecycle
+    url: lifecycle/conversica-lifecycle.yml
+  - type: TermsOfService
+    url: https://www.conversica.com/legal-info/conversica-api-terms-of-service
+- aid: conversica:conversica-leads-api
+  name: Conversica Leads API
+  description: Posting Lead object data into the Conversica Platform.
+  humanURL: https://help.conversica.com/hc/en-us/sections/360012154451-Conversica-API
+  baseURL: https://integrations-api.conversica.com
+  tags:
+  - Leads
+  properties:
+  - type: OpenAPI
+    url: openapi/conversica-leads-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://help.conversica.com/hc/en-us/articles/360048601712-Conversica-API-Integration-Manual
   - type: APIReference
     url: https://help.conversica.com/hc/en-us/sections/360012154451-Conversica-API
   - type: GettingStarted
@@ -115,6 +137,8 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: Overlay
+  url: overlays/conversica-integrations-api-overlay.yaml
 - type: Website
   url: https://www.conversica.com
 - type: Documentation
