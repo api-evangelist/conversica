@@ -12,6 +12,18 @@ description: >-
   objects, plus provider-initiated Message, Lead Update and Website Chat lead-creation
   webhooks delivered to endpoints the customer hosts - alongside packaged connectors for
   Salesforce, HubSpot, Marketo, Eloqua, Pardot, Microsoft Dynamics and automotive CRMs.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://cdn.prod.website-files.com/685300c814434f10e21dadd0/687ab25d596cea9ade1ebbc6_logo.png
 url: https://raw.githubusercontent.com/api-evangelist/conversica/refs/heads/main/apis.yml
 x-type: company
