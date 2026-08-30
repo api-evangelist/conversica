@@ -1,0 +1,264 @@
+openapi: 3.2.0
+info:
+  title: Conversica Integrations Leads API
+  version: '7.2'
+  summary: Post Lead data into the Conversica Platform and receive Message and Lead Update callbacks.
+  description: "The Conversica Integrations API lets a customer system (CRM or marketing automation\nplatform) transport Lead data into the Conversica Platform, and receive Lead Update\nand Message data back from the Conversica Platform. All traffic is JSON-encoded\nPOST over HTTPS with HTTP Basic access authentication.\n\nDirection of travel:\n\n* Customer System -> Conversica: `POST https://integrations-api.conversica.com/json/`\n  with a Lead object.\n* Conversica -> Customer System: Conversica POSTs Message objects and Lead Update\n  objects to two endpoints the customer provides (see the `webhooks` section). The\n  Website Chat lead-creation webhook is a third, optional customer endpoint.\n\nCredentials are issued by a Conversica technical account manager; there is no\nself-serve signup for this API. Applications must be tested and approved by\nConversica before they are enabled.\n"
+  contact:
+    name: Conversica Support
+    email: support@conversica.com
+    url: https://help.conversica.com/hc/en-us/sections/360012154451-Conversica-API
+  termsOfService: https://www.conversica.com/legal-info/conversica-api-terms-of-service
+  x-provenance:
+    method: generated
+    generated: '2026-08-01'
+    note: Faithfully transcribed from Conversica's published API Integration Manual and the Website Chat lead-creation webhook article. Conversica publishes no machine-readable spec; every path, field, type, requiredness, status code and example below is taken verbatim from those documents. Nothing was invented.
+  x-evidence:
+    fetched: '2026-08-01'
+    sources:
+    - url: https://help.conversica.com/hc/en-us/articles/360048601712-Conversica-API-Integration-Manual
+      title: Conversica API Integration Manual
+      http_status: 200
+      note: retrieved via the Zendesk Help Center API (the HTML page returns 403 to non-browser clients)
+      doc_updated: '2025-11-26'
+    - url: https://help.conversica.com/hc/en-us/articles/38828763556635-Implementing-a-Conversica-API-Lead-Creation-Webhook-for-Website-Chat
+      title: Implementing a Conversica API Lead Creation Webhook for Website Chat
+      http_status: 200
+    - url: https://integrations-api.conversica.com/json/
+      http_status: 405
+      note: live probe - GET returns 405 Method Not Allowed, confirming the documented POST-only endpoint
+servers:
+- url: https://integrations-api.conversica.com
+  description: Conversica production integrations endpoint
+security:
+- basicAuth: []
+tags:
+- name: Leads
+  description: Posting Lead object data into the Conversica Platform.
+paths:
+  /json/:
+    post:
+      operationId: postLead
+      summary: Post a Lead to the Conversica Platform
+      description: 'Sends a Lead object to Conversica so a Conversica Assistant can begin (or continue)
+
+        a conversation with that Lead. The endpoint accepts a JSON object; keys with a
+
+        `datetime` type must be UTC values following RFC 3339, and keys with a `boolean`
+
+        type must be `true` or `false`.
+
+        '
+      tags:
+      - Leads
+      security:
+      - basicAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Lead'
+            examples:
+              minimalLead:
+                summary: Minimal Lead (from the integration manual)
+                value:
+                  apiVersion: '7.2'
+                  id: '12345'
+                  conversationId: My Big Event 2019
+                  firstName: Sally
+                  email: sally@email.com
+                  leadSource: Big Events
+                  leadStatus: New
+                  optOut: false
+                  repId: '98765'
+                  repName: John
+              automotiveLead:
+                summary: Automotive Lead with industry-specific keys (from the integration manual)
+                value:
+                  apiVersion: '7.2'
+                  id: '12345'
+                  clientId: '67890'
+                  firstName: Sally
+                  lastName: Jones
+                  email: sally@email.com
+                  homePhone: '3609483728'
+                  leadType: Internet
+                  leadStatus: New
+                  leadSource: www.leadsource.com
+                  date: '2017-01-10T15:19:21+00:00'
+                  repName: John Doe
+                  repId: '23254'
+                  repEmail: john@dealershipname.com
+                  bdcRepName: Sheila Smith
+                  bdcRepId: '20582'
+                  bdcRepEmail: sheila@dealershipname.com
+                  serviceRepName: Billy Brown
+                  serviceRepId: '20143'
+                  serviceRepEmail: billy@dealershipname.com
+                  year: '2019'
+                  make: Volkswagen
+                  model: Atlas SEL
+                  vin: 1N4AL2APXBC154449
+                  appointmentStatus: Scheduled
+                  appointmentDate: '2017-01-10T15:19:21+00:00'
+                  optOut: false
+                  smsOptOut: true
+                  stopMessaging: false
+                  skipToFollowup: true
+      responses:
+        '200':
+          description: OK - the request was successful.
+        '400':
+          description: Bad Request - the request could not be understood due to an error.
+        '401':
+          description: Unauthorized - the request could not be processed due to authentication.
+components:
+  schemas:
+    Lead:
+      type: object
+      title: Lead
+      description: Data containing relevant information for communication by the Conversica Assistant with a customer's prospects. Depending on the Conversation and Assistant in use, a Lead may be a lead, contact, customer, account, prospect, or other related entity. Automotive-specific keys are included and apply only to Automotive Assistants.
+      required:
+      - apiVersion
+      - id
+      - conversationId
+      - firstName
+      - email
+      - leadSource
+      - repName
+      properties:
+        apiVersion:
+          type: string
+          description: The version number of the Conversica API in use.
+          examples:
+          - '7.2'
+        id:
+          type: string
+          description: The Lead's unique ID in the customer's system (Source ID).
+        conversationId:
+          type: string
+          description: For a particular Conversation, a list or filtered set of Leads (e.g. "campaign" in some CRMs) for the purpose of tailoring messaging to a more specific audience or use case.
+        firstName:
+          type: string
+          description: The Lead's first name, used in messaging.
+        email:
+          type: string
+          description: The Lead's primary email address for messaging.
+        leadSource:
+          type: string
+          description: The source of the Lead, as indicated in the customer's system and as used by Conversica for reporting on Lead Source performance or other customizations.
+        leadStatus:
+          type: string
+          description: The status of the Lead, as indicated in the customer's system and as used by Conversica for intelligent Conversation management (e.g. "New", "Sold", "Lost").
+        optOut:
+          type: boolean
+          description: Whether the Lead has opted out of all methods of marketing and contact (global opt-out).
+        repId:
+          type: string
+          description: The Salesperson's (Lead owner) unique ID in the customer's system.
+        repName:
+          type: string
+          description: The Salesperson's (Lead owner) name, used in messaging.
+        repEmail:
+          type: string
+          description: The Salesperson's (Lead owner) email address.
+        clientId:
+          type: string
+          description: Unique ID for the customer in the customer's system. Required if the API integration will be used for multiple Conversica customers.
+        lastName:
+          type: string
+          description: The Lead's last name.
+        homePhone:
+          type: string
+          description: The Lead's primary phone number.
+        workPhone:
+          type: string
+          description: The Lead's work phone number.
+        cellPhone:
+          type: string
+          description: The Lead's cell phone number. Required for SMS.
+        address:
+          type: string
+          description: The Lead's street address.
+        city:
+          type: string
+          description: The Lead's city.
+        state:
+          type: string
+          description: The Lead's state.
+        zip:
+          type: string
+          description: The Lead's zip code.
+        leadType:
+          type: string
+          description: The type of the Lead, as indicated in the customer's system (e.g. "Internet", "Web Form", "Phone-In").
+        date:
+          type: string
+          format: date-time
+          description: The date and time the Lead was created in the customer's system (UTC, RFC 3339).
+        smsOptOut:
+          type: boolean
+          description: Whether the Lead has opted out of being contacted by SMS text messaging. Required for SMS Conversations.
+        smsOptIn:
+          type: boolean
+          description: Whether the Lead has accepted being contacted by SMS text messaging. Required for SMS Conversations.
+        stopMessaging:
+          type: boolean
+          description: If true, the Assistant stops listening for responses and will no longer message the Lead.
+        skipToFollowup:
+          type: boolean
+          description: If true, the Assistant waits a few days before sending a follow-up message.
+        leadSubStatus:
+          type: string
+          description: Automotive - the sub-status of the Lead, as indicated in the customer's system.
+        appointmentStatus:
+          type: string
+          description: Automotive - the current appointment status/stage for the Lead in the customer's system (e.g. "Scheduled").
+        appointmentDate:
+          type: string
+          format: date-time
+          description: Automotive - the date and time the Lead entered into the current appointment status.
+        bdcRepId:
+          type: string
+          description: Automotive - the BDC representative's unique ID in the customer's system.
+        bdcRepName:
+          type: string
+          description: Automotive - the BDC representative's name, used in messaging.
+        bdcRepEmail:
+          type: string
+          description: Automotive - the BDC representative's email address.
+        serviceRepId:
+          type: string
+          description: Automotive - the service advisor's unique ID in the customer's system.
+        serviceRepName:
+          type: string
+          description: Automotive - the service advisor's name, used in messaging.
+        serviceRepEmail:
+          type: string
+          description: Automotive - the service advisor's email address.
+        year:
+          type: string
+          description: Automotive - the year of the vehicle of interest or primary vehicle associated with the Lead.
+        make:
+          type: string
+          description: Automotive - the make of the vehicle of interest or primary vehicle associated with the Lead.
+        model:
+          type: string
+          description: Automotive - the model of the vehicle of interest or primary vehicle associated with the Lead.
+        vin:
+          type: string
+          description: Automotive - the vehicle identification number of the vehicle associated with the Lead.
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: 'HTTPS basic access authentication. Conversica issues a username and password for
+
+        the Conversica endpoint; the customer issues a single username/password pair that
+
+        Conversica uses for both customer endpoints. API usernames have a five-character
+
+        minimum. Credentials are obtained from a Conversica technical account manager.
+
+        '
