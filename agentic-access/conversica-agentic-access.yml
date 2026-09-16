@@ -1,6 +1,6 @@
-generated: '2026-08-01'
+generated: '2026-09-16'
 method: generated
-source: openapi/conversica-integrations-api-openapi.yml
+source: openapi/conversica-leads-api-openapi.yml
 description: Recommended x-agentic-access execution contracts, classified heuristically from
   the OpenAPI. A governance starting point for exposing this API to AI agents — review and bind
   audience per deployment. See research/curity/agentic-governance/.
