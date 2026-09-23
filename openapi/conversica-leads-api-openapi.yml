@@ -3,7 +3,11 @@ info:
   title: Conversica Integrations Leads API
   version: '7.2'
   summary: Post Lead data into the Conversica Platform and receive Message and Lead Update callbacks.
-  description: "The Conversica Integrations API lets a customer system (CRM or marketing automation\nplatform) transport Lead data into the Conversica Platform, and receive Lead Update\nand Message data back from the Conversica Platform. All traffic is JSON-encoded\nPOST over HTTPS with HTTP Basic access authentication.\n\nDirection of travel:\n\n* Customer System -> Conversica: `POST https://integrations-api.conversica.com/json/`\n  with a Lead object.\n* Conversica -> Customer System: Conversica POSTs Message objects and Lead Update\n  objects to two endpoints the customer provides (see the `webhooks` section). The\n  Website Chat lead-creation webhook is a third, optional customer endpoint.\n\nCredentials are issued by a Conversica technical account manager; there is no\nself-serve signup for this API. Applications must be tested and approved by\nConversica before they are enabled.\n"
+  description: 'The Conversica Integrations API lets a customer system (CRM or marketing automation
+
+    platform) transport Lead data into the Conversica Platform, and receive Lead Update
+
+    and Message data back from the Conversica Platform.'
   contact:
     name: Conversica Support
     email: support@conversica.com
@@ -46,9 +50,7 @@ paths:
 
         `datetime` type must be UTC values following RFC 3339, and keys with a `boolean`
 
-        type must be `true` or `false`.
-
-        '
+        type must be `true` or `false`.'
       tags:
       - Leads
       security:

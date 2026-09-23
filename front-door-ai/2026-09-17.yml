@@ -1,0 +1,27 @@
+# Front Door AI Index — conversica — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: conversica
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: www.conversica.com
+  final_host: www.conversica.com
+  ownership: own
+  owner: conversica
+  shares_host_with: null
+  inherited_from: null
+  verdict: scored
+  score: 36
+  host_score: 36
+  density: 43.06
+  words: 836
+  tiers:
+    agentic: 16
+    core: 20
+    model: 0
+  ambiguous: 16
+  top_terms:
+    AI: 20
+    AI agent: 16
+    agent: 16

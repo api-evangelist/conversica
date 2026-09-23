@@ -1,0 +1,26 @@
+{
+  "provider": "conversica",
+  "sources": [
+    "_original/conversica-integrations-api-openapi.yml"
+  ],
+  "outputs": [
+    "conversica-conversica-integrations-api-api-openapi.yml",
+    "conversica-leads-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "conversica-integrations-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "conversica-integrations-api-openapi.yml: tagged webhooks POST message -> Conversica Integrations API",
+    "conversica-integrations-api-openapi.yml: tagged webhooks POST leadUpdate -> Conversica Integrations API",
+    "conversica-integrations-api-openapi.yml: tagged webhooks POST chatLeadCreated -> Conversica Integrations API",
+    "conversica-integrations-api-openapi.yml: declared missing tag: Conversica Integrations API",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "conversica-conversica-integrations-api-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "conversica-leads-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
+}

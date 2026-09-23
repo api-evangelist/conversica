@@ -3,7 +3,11 @@ info:
   title: Conversica Integrations API
   version: '7.2'
   summary: Post Lead data into the Conversica Platform and receive Message and Lead Update callbacks.
-  description: "The Conversica Integrations API lets a customer system (CRM or marketing automation\nplatform) transport Lead data into the Conversica Platform, and receive Lead Update\nand Message data back from the Conversica Platform. All traffic is JSON-encoded\nPOST over HTTPS with HTTP Basic access authentication.\n\nDirection of travel:\n\n* Customer System -> Conversica: `POST https://integrations-api.conversica.com/json/`\n  with a Lead object.\n* Conversica -> Customer System: Conversica POSTs Message objects and Lead Update\n  objects to two endpoints the customer provides (see the `webhooks` section). The\n  Website Chat lead-creation webhook is a third, optional customer endpoint.\n\nCredentials are issued by a Conversica technical account manager; there is no\nself-serve signup for this API. Applications must be tested and approved by\nConversica before they are enabled.\n"
+  description: 'The Conversica Integrations API lets a customer system (CRM or marketing automation
+
+    platform) transport Lead data into the Conversica Platform, and receive Lead Update
+
+    and Message data back from the Conversica Platform.'
   contact:
     name: Conversica Support
     email: support@conversica.com
@@ -50,9 +54,7 @@ webhooks:
 
         example endpoint forms: `https://api.customername.com/conversicaMessage/` or
 
-        `https://api.customername.com/conversica/message`.
-
-        '
+        `https://api.customername.com/conversica/message`.'
       security:
       - basicAuth: []
       requestBody:
@@ -113,9 +115,7 @@ webhooks:
 
         `https://api.customername.com/conversicaLead/` or
 
-        `https://api.customername.com/conversica/lead`.
-
-        '
+        `https://api.customername.com/conversica/lead`.'
       security:
       - basicAuth: []
       requestBody:
@@ -174,9 +174,7 @@ webhooks:
         `https://api.customername.com/conversica/create`.
 
 
-        The endpoint must reply with a JSON object carrying `status` and `message`.
-
-        '
+        The endpoint must reply with a JSON object carrying `status` and `message`.'
       security:
       - basicAuth: []
       requestBody:
@@ -234,6 +232,31 @@ webhooks:
       - Conversica Integrations API
 components:
   schemas:
+    ChatLead:
+      type: object
+      title: ChatLead
+      description: Lead captured by Conversica Website Chat, delivered to the customer's lead-creation webhook.
+      required:
+      - firstName
+      - lastName
+      - email
+      - conversationHistory
+      properties:
+        firstName:
+          type: string
+          description: First name of the lead.
+        lastName:
+          type: string
+          description: Last name of the lead.
+        email:
+          type: string
+          description: Email address of the lead.
+        conversationHistory:
+          type: string
+          description: Transcript of the chat conversation.
+        clientId:
+          type: string
+          description: ID of the client in the partner's system. Sent only for provider-style integrations.
     WebhookAck:
       type: object
       title: WebhookAck
@@ -253,6 +276,44 @@ components:
         message:
           type: string
           description: Human-readable result message.
+    Message:
+      type: object
+      title: Message
+      description: The communication between the Conversica Assistant and the Lead, including communication both sent to and received from the Lead. All keys are required.
+      required:
+      - apiVersion
+      - id
+      - clientId
+      - action
+      - date
+      - subject
+      - body
+      properties:
+        apiVersion:
+          type: string
+          description: Version number of the Conversica API in use.
+        id:
+          type: string
+          description: The Lead's unique ID in the customer's system.
+        clientId:
+          type: string
+          description: Unique ID for the customer in the customer's system.
+        action:
+          type: string
+          description: Whether the message was sent by the Assistant or received from the Lead.
+          enum:
+          - sent
+          - received
+        date:
+          type: string
+          format: date-time
+          description: The date and time the message was sent or received.
+        subject:
+          type: string
+          description: The subject of the message sent or received.
+        body:
+          type: string
+          description: The body of the message sent or received.
     LeadUpdate:
       type: object
       title: LeadUpdate
@@ -350,69 +411,6 @@ components:
         smsOptOut:
           type: boolean
           description: If true, the Lead has requested to not be contacted by SMS/text messaging.
-    ChatLead:
-      type: object
-      title: ChatLead
-      description: Lead captured by Conversica Website Chat, delivered to the customer's lead-creation webhook.
-      required:
-      - firstName
-      - lastName
-      - email
-      - conversationHistory
-      properties:
-        firstName:
-          type: string
-          description: First name of the lead.
-        lastName:
-          type: string
-          description: Last name of the lead.
-        email:
-          type: string
-          description: Email address of the lead.
-        conversationHistory:
-          type: string
-          description: Transcript of the chat conversation.
-        clientId:
-          type: string
-          description: ID of the client in the partner's system. Sent only for provider-style integrations.
-    Message:
-      type: object
-      title: Message
-      description: The communication between the Conversica Assistant and the Lead, including communication both sent to and received from the Lead. All keys are required.
-      required:
-      - apiVersion
-      - id
-      - clientId
-      - action
-      - date
-      - subject
-      - body
-      properties:
-        apiVersion:
-          type: string
-          description: Version number of the Conversica API in use.
-        id:
-          type: string
-          description: The Lead's unique ID in the customer's system.
-        clientId:
-          type: string
-          description: Unique ID for the customer in the customer's system.
-        action:
-          type: string
-          description: Whether the message was sent by the Assistant or received from the Lead.
-          enum:
-          - sent
-          - received
-        date:
-          type: string
-          format: date-time
-          description: The date and time the message was sent or received.
-        subject:
-          type: string
-          description: The subject of the message sent or received.
-        body:
-          type: string
-          description: The body of the message sent or received.
   securitySchemes:
     basicAuth:
       type: http
