@@ -232,6 +232,31 @@ webhooks:
       - Conversica Integrations API
 components:
   schemas:
+    ChatLead:
+      type: object
+      title: ChatLead
+      description: Lead captured by Conversica Website Chat, delivered to the customer's lead-creation webhook.
+      required:
+      - firstName
+      - lastName
+      - email
+      - conversationHistory
+      properties:
+        firstName:
+          type: string
+          description: First name of the lead.
+        lastName:
+          type: string
+          description: Last name of the lead.
+        email:
+          type: string
+          description: Email address of the lead.
+        conversationHistory:
+          type: string
+          description: Transcript of the chat conversation.
+        clientId:
+          type: string
+          description: ID of the client in the partner's system. Sent only for provider-style integrations.
     WebhookAck:
       type: object
       title: WebhookAck
@@ -348,31 +373,6 @@ components:
         smsOptOut:
           type: boolean
           description: If true, the Lead has requested to not be contacted by SMS/text messaging.
-    ChatLead:
-      type: object
-      title: ChatLead
-      description: Lead captured by Conversica Website Chat, delivered to the customer's lead-creation webhook.
-      required:
-      - firstName
-      - lastName
-      - email
-      - conversationHistory
-      properties:
-        firstName:
-          type: string
-          description: First name of the lead.
-        lastName:
-          type: string
-          description: Last name of the lead.
-        email:
-          type: string
-          description: Email address of the lead.
-        conversationHistory:
-          type: string
-          description: Transcript of the chat conversation.
-        clientId:
-          type: string
-          description: ID of the client in the partner's system. Sent only for provider-style integrations.
     Message:
       type: object
       title: Message
