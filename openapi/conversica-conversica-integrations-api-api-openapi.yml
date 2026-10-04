@@ -232,6 +232,63 @@ webhooks:
       - Conversica Integrations API
 components:
   schemas:
+    WebhookAck:
+      type: object
+      title: WebhookAck
+      description: 'Acknowledgement envelope the customer''s Website Chat lead-creation webhook must return: a JSON object containing status and message.'
+      required:
+      - status
+      - message
+      properties:
+        status:
+          type: string
+          description: The HTTP status code, as a string.
+          enum:
+          - '200'
+          - '400'
+          - '401'
+          - '500'
+        message:
+          type: string
+          description: Human-readable result message.
+    Message:
+      type: object
+      title: Message
+      description: The communication between the Conversica Assistant and the Lead, including communication both sent to and received from the Lead. All keys are required.
+      required:
+      - apiVersion
+      - id
+      - clientId
+      - action
+      - date
+      - subject
+      - body
+      properties:
+        apiVersion:
+          type: string
+          description: Version number of the Conversica API in use.
+        id:
+          type: string
+          description: The Lead's unique ID in the customer's system.
+        clientId:
+          type: string
+          description: Unique ID for the customer in the customer's system.
+        action:
+          type: string
+          description: Whether the message was sent by the Assistant or received from the Lead.
+          enum:
+          - sent
+          - received
+        date:
+          type: string
+          format: date-time
+          description: The date and time the message was sent or received.
+        subject:
+          type: string
+          description: The subject of the message sent or received.
+        body:
+          type: string
+          description: The body of the message sent or received.
     ChatLead:
       type: object
       title: ChatLead
@@ -257,25 +314,6 @@ components:
         clientId:
           type: string
           description: ID of the client in the partner's system. Sent only for provider-style integrations.
-    WebhookAck:
-      type: object
-      title: WebhookAck
-      description: 'Acknowledgement envelope the customer''s Website Chat lead-creation webhook must return: a JSON object containing status and message.'
-      required:
-      - status
-      - message
-      properties:
-        status:
-          type: string
-          description: The HTTP status code, as a string.
-          enum:
-          - '200'
-          - '400'
-          - '401'
-          - '500'
-        message:
-          type: string
-          description: Human-readable result message.
     LeadUpdate:
       type: object
       title: LeadUpdate
@@ -373,44 +411,6 @@ components:
         smsOptOut:
           type: boolean
           description: If true, the Lead has requested to not be contacted by SMS/text messaging.
-    Message:
-      type: object
-      title: Message
-      description: The communication between the Conversica Assistant and the Lead, including communication both sent to and received from the Lead. All keys are required.
-      required:
-      - apiVersion
-      - id
-      - clientId
-      - action
-      - date
-      - subject
-      - body
-      properties:
-        apiVersion:
-          type: string
-          description: Version number of the Conversica API in use.
-        id:
-          type: string
-          description: The Lead's unique ID in the customer's system.
-        clientId:
-          type: string
-          description: Unique ID for the customer in the customer's system.
-        action:
-          type: string
-          description: Whether the message was sent by the Assistant or received from the Lead.
-          enum:
-          - sent
-          - received
-        date:
-          type: string
-          format: date-time
-          description: The date and time the message was sent or received.
-        subject:
-          type: string
-          description: The subject of the message sent or received.
-        body:
-          type: string
-          description: The body of the message sent or received.
   securitySchemes:
     basicAuth:
       type: http
