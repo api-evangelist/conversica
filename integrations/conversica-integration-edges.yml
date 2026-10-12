@@ -1,0 +1,16 @@
+generated: '2026-10-12'
+method: none
+source:
+- https://zapier.com/apps/conversica/integrations
+- https://n8n.io/integrations/conversica/
+- https://composio.dev/toolkits/conversica
+- https://monid.ai/tools/conversica
+checked:
+- https://composio.dev/toolkits/conversica
+- https://monid.ai/tools/conversica
+- https://n8n.io/integrations/conversica/
+- https://zapier.com/apps/conversica/integrations
+summary: null
+marketplace_apps: []
+edges: []
+templates: []
