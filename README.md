@@ -64,64 +64,153 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Conversica is an AI conversation automation company — "The Conversation Company" — whose
-Revenue Digital Assistants and AI Agents hold two-way, natural-language conversations with
-leads and customers over email, SMS and website chat. Founded in 2007 as AutoFerret.com and
-renamed Conversica in 2014, the San Mateo company serves automotive, sports and
-entertainment, hospitality, higher education and enterprise teams.
+Conversica is an AI conversation automation company - "The Conversation Company" - whose Revenue Digital Assistants and AI Agents hold two-way, natural-language conversations with leads and customers over email, SMS and website chat to generate demand, answer questions and drive renewals. Founded in 2007 as AutoFerret.com and renamed Conversica in 2014, the San Mateo company serves automotive, sports and entertainment, hospitality, higher education and enterprise teams, and says its platform has powered more than 1.5 billion conversations for 2,000+ teams. Its integration surface is the Conversica Integrations API - a JSON-over-HTTPS, Basic-authenticated endpoint that ingests Lead objects, plus provider-initiated Message, Lead Update and Website Chat lead-creation webhooks delivered to endpoints the customer hosts - alongside packaged connectors for Salesforce, HubSpot, Marketo, Eloqua, Pardot, Microsoft Dynamics and automotive CRMs.
 
-- Website: https://www.conversica.com
-- Help centre: https://help.conversica.com
-- API docs: https://help.conversica.com/hc/en-us/sections/360012154451-Conversica-API
-- Trust centre: https://trust.conversica.com
+**Areas:** Company · Artificial Intelligence · Conversational AI · AI Agents · Sales · Marketing · Lead Management · CRM · Marketing Automation · Customer Engagement · Messaging · SMS
 
-## The API
+## Conversica on APIs.io
 
-**Conversica Integrations API** — `https://integrations-api.conversica.com`
+Everything profiled for Conversica is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/conversica/](https://apis.io/providers/conversica/)** — or go straight to one of the APIs or properties below.
 
-A single JSON-over-HTTPS ingest endpoint (`POST /json/`) protected by HTTP Basic
-authentication, plus three provider-initiated webhooks — Message, Lead Update and Website
-Chat lead creation — delivered to endpoints the customer hosts. There is **no read or list
-operation**: conversation state comes back only through the webhooks. The API version
-travels in the JSON body as `apiVersion` (currently `7.2`), not in the URL.
+### APIs (2)
 
-Access is gated — credentials are issued by a Conversica technical account manager and
-applications must be approved by Conversica before they are enabled.
+- [Conversica Integrations API](https://apis.io/apis/conversica/conversica-conversica-integrations-api-api/) — The Conversica Integrations API API from Conversica — 0 operation(s) for conversica integrations api.
+- [Conversica Leads API](https://apis.io/apis/conversica/conversica-leads-api/) — Posting Lead object data into the Conversica Platform.
 
-Conversica publishes no machine-readable specification. `openapi/` holds an OpenAPI 3.1
-document transcribed by the API Evangelist enrichment pipeline from Conversica's published
-API Integration Manual and Website Chat webhook article; every path, field, type,
-requiredness, status code and example in it comes from those documents.
+### Published properties
 
-## What is here
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-| Directory | Contents |
+#### AsyncAPI (1)
+
+Event-driven and webhook contracts.
+
+- [Conversica Webhooks](https://apis.io/asyncapis/conversica/conversica-webhooks/)
+
+#### Agentic access (1)
+
+Which operations an agent can call, which act, and which need a human in the loop.
+
+- [Conversica Agentic Access](https://apis.io/agentic-access/conversica/conversica-agentic-access/)
+
+#### Vocabulary (1)
+
+The provider's domain terms, defined.
+
+- [Conversica Conversation Vocabulary](https://apis.io/vocabularies/conversica/conversica-conversation-vocabulary/)
+
+#### Examples (8)
+
+Example requests and responses.
+
+- [Conversica Chat Lead](https://apis.io/examples/conversica/conversica-chat-lead/)
+- [Conversica Chat Webhook Ack](https://apis.io/examples/conversica/conversica-chat-webhook-ack/)
+- [Conversica Lead Automotive](https://apis.io/examples/conversica/conversica-lead-automotive/)
+- [Conversica Lead Minimal](https://apis.io/examples/conversica/conversica-lead-minimal/)
+- [Conversica Lead Update Engagement](https://apis.io/examples/conversica/conversica-lead-update-engagement/)
+- [Conversica Lead Update Stage](https://apis.io/examples/conversica/conversica-lead-update-stage/)
+- [Conversica Message Received](https://apis.io/examples/conversica/conversica-message-received/)
+- [Conversica Message Sent](https://apis.io/examples/conversica/conversica-message-sent/)
+
+#### Collections (1)
+
+Postman and Open Collection request collections.
+
+- [Conversica Integrations API](https://apis.io/collections/conversica/open-conversica-integrations-api/)
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Conversica Integrations Api Overlay](https://apis.io/overlays/conversica/conversica-integrations-api-overlay/)
+
+#### Security (4)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Conversica Authentication](https://apis.io/security/conversica/conversica-authentication/)
+- [Conversica Domain Security](https://apis.io/security/conversica/conversica-domain-security/)
+- [Conversica Trust Center](https://apis.io/security/conversica/conversica-trust-center/)
+- [Conversica Vulnerability Disclosure](https://apis.io/security/conversica/conversica-vulnerability-disclosure/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Conversica Plans Pricing](https://apis.io/plans/conversica/conversica-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Conversica Rate Limits](https://apis.io/rate-limits/conversica/conversica-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.conversica.com)
+- [Documentation](https://help.conversica.com/hc/en-us/articles/360048601712-Conversica-API-Integration-Manual)
+- [Getting started](https://help.conversica.com/hc/en-us/articles/360048680052-API-Implementation-Overview)
+- [API reference](https://help.conversica.com/hc/en-us/sections/360012154451-Conversica-API)
+- [Support](https://help.conversica.com/)
+- [Blog](https://www.conversica.com/blog)
+- [Security](https://www.conversica.com/legal-info/responsible-disclosure-policy)
+- [Compliance](https://trust.conversica.com/)
+- [Terms of service](https://www.conversica.com/legal-info/terms)
+- [Privacy policy](https://www.conversica.com/legal-info/privacy-policy)
+
+## API Evangelist rating
+
+**Kin Score 40.8** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
 |---|---|
-| `openapi/` | Captured OpenAPI 3.1 — 1 operation, 3 webhooks, 5 schemas |
-| `overlays/` | API Evangelist annotations and recorded contract gaps |
-| `asyncapi/` | Webhook catalogue (no AsyncAPI is published) |
-| `authentication/` | Basic auth profile, plus the documented outbound OAuth 2.0 path |
-| `conventions/` | Auth, versioning, partial updates, error envelope, absent idempotency/pagination |
-| `errors/` | Published status codes and the `status`/`message` ack envelope |
-| `vocabulary/` | Lead Status values and every Conversation Stage/Status with definitions |
-| `data-model/` | Lead / Message / LeadUpdate / ChatLead entity graph |
-| `examples/` | Eight request and response payloads published verbatim by Conversica |
-| `sandbox/` | The Test Lead Token mechanism |
-| `lifecycle/` | Versioning, the 30-day change-notice term, absent SLA and status page |
-| `conformance/` | Cross-cutting standards posture |
-| `security/` | Domain security probe, responsible disclosure policy, trust centre |
-| `components/` | Website Chat JavaScript widget and packaged CRM connectors |
-| `packages/` | Empty — Conversica ships no first-party client libraries |
-| `mcp/` | Candidate only — Conversica publishes no MCP server |
-| `well-known/` | Probe record — no `/.well-known/` document is served on any host |
-| `agentic-access/` | Recommended execution contract for agent use |
-| `skills/` | Packaged agent skills for posting leads and receiving conversation events |
-| `llms/` | Generated `llms.txt` (Conversica serves none) |
+| Discoverability | 73.2 |
+| Contract quality | 25.3 |
+| Contract governance | 19.7 |
+| Operational transparency | 26.3 |
+| Developer ergonomics | 56.5 |
+| Access clarity | 43.4 |
 
-## Notable gaps
+**Agent readiness 32.9** — agent-ready
 
-No SDKs, no CLI, no MCP server, no A2A agent card, no `/.well-known/` documents, no
-`security.txt` despite a published responsible disclosure policy, no idempotency contract,
-no published rate limits, no dated changelog, no SLA, and no live status page — the
-`status.conversica.com` host does not resolve and the underlying Statuspage instance is
-inactive.
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | yes |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | na |
+
+**Regulatory alignment 32.7** — Education & Research
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/conversica/](https://apis.io/providers/conversica/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Conversica: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/conversica/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
